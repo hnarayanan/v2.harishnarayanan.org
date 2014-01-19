@@ -1,0 +1,3992 @@
+<!--#set var="pagetitle" value="Past and Present Research Information" -->
+<!--#include file="genericheader.html" --> 
+<!--#set var="navigation" value="Research" -->
+<!--#include file="genericnavigator.html" -->
+
+    <!-- The actual content of the page --> 
+    <div id="content">
+      <h1>Areas of Interest</h1>
+      <p>My academic interests fall under the following relatively
+      broad categories:</p>
+      <ul>
+        <li>Classical theoretical and applied mechanics, Multi-physics
+      phenomena</li>
+	<li>Analysis of numerical methods, Advanced finite element
+      methods</li>
+	<li>Large scale high performance computing</li>
+      </ul>
+ 
+<h1 align="center">Biological growth: Reaction, transport and mechanics </h1>
+
+<h3 align="center">H. Narayanan, E. M. Arruda, K. Grosh, K. Garikipati </h3>
+
+<div class="p"><!----></div>
+
+<h3 align="center">Received: date / Accepted: date </h3>
+
+<div class="p"><!----></div>
+
+<h2> Abstract</h2>
+In this paper, we address some modelling issues related to biological
+growth. Our treatment is based on a recently-proposed, general
+formulation for growth (Journal of the Mechanics and Physics of
+Solids, <b>52</b>, 2004, 1595-1625) within the context of open
+system continuum thermodynamics. We aim to enhance this treatment by
+making it more appropriate for the biophysics of growth in soft
+tissue, specifically tendon. This involves several modifications to
+the mathematical formulation to represent the reactions, transport and
+mechanics, and their interactions. We also reformulate the governing
+differential equations for reaction-transport to represent the
+incompressibility constraint on the fluid phase of the tissue. This
+revision enables a straightforward implementation of numerical
+stabilisation for the hyperbolic, or advection-dominated, limit. A
+finite element implementation employing a staggered scheme is utilised
+to solve the coupled nonlinear partial differential equations that
+arise from the theory.  Motivated by our experimental model, an <i>
+in vitro</i> scaffold-free engineered tendon formed by self-assembly of
+tendon fibroblasts [<a href="#Calve:04" name="CITECalve:04">Calve et&nbsp;al., 2004</a>], we solve several numerical
+examples demonstrating biophysical aspects of growth, and the improved
+numerical performance of the models.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc1">
+1</a>&nbsp;&nbsp;Introduction</h2>
+<a name="sec:1">
+</a>
+
+<div class="p"><!----></div>
+<em>Growth</em> involves the addition or depletion of mass in biological
+tissue. In biological systems, growth occurs in combination with
+<em>remodelling</em>, which is a change in microstructure, and possibly
+with <em>morphogenesis</em>, which is a change in form in the embryonic
+state. The physics of these processes are quite distinct, and for
+modelling purposes can, and must, be separated. Our previous work
+[<a href="#growthpaper" name="CITEgrowthpaper">Garikipati et&nbsp;al., 2004</a>], upon which we now seek to build, drew in some
+measure from <a href="#CowinHegedus:76" name="CITECowinHegedus:76">Cowin and Hegedus [1976]</a>,<a href="#EpsteinMaugin:2000" name="CITEEpsteinMaugin:2000">Epstein and Maugin [2000]</a>,<a href="#TaberHumphrey:2001" name="CITETaberHumphrey:2001">Taber and Humphrey [2001]</a> and <a href="#KuhlSteinmann:02" name="CITEKuhlSteinmann:02">Kuhl and Steinmann [2003]</a>, and was focused upon
+a comprehensive account of the coupling between transport and
+mechanics. The origins of this coupling were traced to the balance
+equations, kinematics and constitutive relations. A major contribution
+of that work was the identification and discussion of several driving
+forces for transport that are thermodynamically-consistent in the
+sense that specification of these relations does not violate the
+Clausius-Duhem dissipation inequality. Now, we seek to restrict the
+range of physically-admissible possibilities in order to gain greater
+physiological relevance for modelling growth in soft biological
+tissue. The advection-diffusion equations for mass transport
+require numerical stabilisation in the advection-dominated regime (the
+hyperbolic limit). We draw upon the enforcement of the
+incompressibility limit for the fluid phase to facilitate this
+process. Below, we briefly introduce each aspect that we have
+considered, but postpone details until relevant sections in the paper.
+
+<div class="p"><!----></div>
+
+<ul>
+<li> For a tissue undergoing finite strains, the transport equations
+  can be formulated, mathematically, in terms of concentrations with
+  respect to either the reference or current (deformed)
+  configuration. However, the physics of fluid-tissue interactions and
+  the imposition of relevant boundary conditions is best understood
+  and represented in the current configuration.
+<div class="p"><!----></div>
+</li>
+
+<li> The state of saturation is crucial in determining whether the
+  tissue swells or shrinks with infusion/expulsion of fluid.
+<div class="p"><!----></div>
+</li>
+
+<li> The fluid phase, whether slightly compressible or
+  incompressible, can develop compressive stress without
+  bound. However, it can develop at most a small tensile stress
+  [<a href="#cavitationchris" name="CITEcavitationchris">Brennen, 1995</a>], having implications for the stiffness and
+  strength of the tissue in tension as against compression. Though
+  this also has implications for void formation through cavitation,
+  the ambient pressure in the tissue under normal physiological
+  conditions ensures that this manifests itself only as a reduction in
+  compressive pressure.
+<div class="p"><!----></div>
+</li>
+
+<li> When modelling transport, it is common to assume Fickean
+  diffusion [<a href="#KuhlSteinmann:02" name="CITEKuhlSteinmann:02">Kuhl and Steinmann, 2003</a>]. This implies the existence of a
+  mixing entropy due to the configurations available to molecules of
+  the diffusing species at fixed values of the macroscopic
+  concentration. The state of saturation directly influences this
+  mixing entropy.
+<div class="p"><!----></div>
+</li>
+
+<li> If fluid saturation is maintained, void formation in the pores
+  is disallowed under an increase in the pores' volume. This has
+  implications for the fluid exchanges between a deforming tissue and
+  a fluid bath with which it is in contact.
+<div class="p"><!----></div>
+</li>
+
+<li> Recognising the incompressibility of the fluid phase, it is
+  common to treat soft biological tissue as either incompressible or
+  nearly-incompressible [<a href="#Fung:1993" name="CITEFung:1993">Fung, 1993</a>]. At the scale of the pores
+  (the microscopic scale in this case), however, a distinction exists
+  in that the fluid is exactly (or nearly) incompressible, while the
+  porous solid network is not.
+<div class="p"><!----></div>
+</li>
+
+<li> In <a href="#growthpaper" name="CITEgrowthpaper">Garikipati et&nbsp;al. [2004]</a>, the acceleration of the solid phase was
+  included as a driving force in the constitutive relation for the
+  flux of other phases. However, acceleration is not frame-invariant
+  and its use in constitutive relations is inappropriate.
+<div class="p"><!----></div>
+</li>
+
+<li> Chemical solutes in the extra-cellular fluid are advected
+  by the fluid velocity and additionally undergo transport under a
+  chemical potential gradient relative to the fluid. In the hyperbolic
+  limit, where advection dominates, spatial instabilities emerge in
+  numerical solutions of these transport equations
+  [<a href="#Brooks:82" name="CITEBrooks:82">Brooks and Hughes, 1982</a>,<a href="#Paper6" name="CITEPaper6">Hughes et&nbsp;al., 1987</a>]. Numerical stabilisation of the equations
+  is intimately tied to the mathematical representation of fluid
+  incompressibility.
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+These issues are treated in detail in relevant sections of the paper,
+which is laid out as follows: Balance equations and kinematics are
+discussed in Section <a href="#sec:2">2</a>, constitutive relations for
+reactions, transport and mechanics in Section <a href="#sec:3">3</a>, and
+numerical examples are presented in Section
+<a href="#numericalimplementation">4</a>. Conclusions are drawn in Section
+<a href="#sec:5">5</a>.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc2">
+2</a>&nbsp;&nbsp;Balance equations and kinematics of growth</h2>
+<a name="sec:2">
+</a>
+
+<div class="p"><!----></div>
+In this section, the coupled, continuum balance equations governing
+the behaviour of growing tissue are summarised and specialised as
+outlined in Section <a href="#sec:1">1</a>. For detailed continuum mechanical
+arguments underlying the equations, the interested reader is directed
+to <a href="#growthpaper" name="CITEgrowthpaper">Garikipati et&nbsp;al. [2004]</a>.
+
+<div class="p"><!----></div>
+The tissue of interest is an open subset of 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>R</mi></mrow><mrow><mn>3</mn></mrow>
+</msup>
+</mrow></math> with a
+piecewise smooth boundary. At a reference placement of the tissue,
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub><mrow><mi>&Omega;</mi></mrow><mrow><mn>0</mn></mrow>
+</msub>
+</mrow></math>, points in the tissue are identified by their reference
+positions, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">X</mi>
+<mtext></mtext>
+<mo>&isin;</mo>
+<msub><mrow><mi>&Omega;</mi></mrow><mrow><mn>0</mn></mrow>
+</msub>
+</mrow></math>. The motion of the tissue is a
+sufficiently smooth bijective map 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">&phiv;</mi>
+<mtext></mtext>
+<mo>:</mo>
+<msub><mrow>
+<mover><mrow><mi>&Omega;</mi></mrow>
+<mo stretchy="true">&OverBar;</mo></mover>
+</mrow><mrow><mn>0</mn></mrow>
+</msub>
+<mo>&times;</mo><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mi>T</mi><mo stretchy="false">]</mo><mo>&rarr;</mo>
+<msup><mrow><mi>R</mi></mrow><mrow><mn>3</mn></mrow>
+</msup>
+</mrow></math>, where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub><mrow>
+<mover><mrow><mi>&Omega;</mi></mrow>
+<mo stretchy="true">&OverBar;</mo></mover>
+</mrow><mrow><mn>0</mn></mrow>
+</msub>
+<mo>:</mo><mo>=</mo>
+<msub><mrow><mi>&Omega;</mi></mrow><mrow><mn>0</mn></mrow>
+</msub>
+<mo>&cup;</mo><mo>&part;</mo>
+<msub><mrow><mi>&Omega;</mi></mrow><mrow><mn>0</mn></mrow>
+</msub>
+</mrow></math>. At a typical time 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>t</mi><mo>&isin;</mo><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mi>T</mi><mo stretchy="false">]</mo></mrow></math>,
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">&phiv;</mi>
+<mtext></mtext>
+<mo stretchy="false">(</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">X</mi>
+<mtext></mtext>
+<mo>,</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></math> maps a point 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">X</mi>
+<mtext></mtext>
+</mrow></math> to its current position,
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">x</mi>
+<mtext></mtext>
+</mrow></math>. In its current configuration, the tissue occupies a region
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub><mrow><mi>&Omega;</mi></mrow><mrow><mi>t</mi></mrow>
+</msub>
+<mo>=</mo>
+<msub><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">&phiv;</mi>
+<mtext></mtext>
+</mrow><mrow><mi>t</mi></mrow>
+</msub>
+<mo stretchy="false">(</mo>
+<msub><mrow><mi>&Omega;</mi></mrow><mrow><mn>0</mn></mrow>
+</msub>
+<mo stretchy="false">)</mo></mrow></math>. These details are depicted in
+Figure <a href="#cp">1</a>. The deformation gradient 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+<mo>:</mo><mo>=</mo><mo>&part;</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">&phiv;</mi>
+<mtext></mtext>
+<mo stretchy="false">/</mo><mo>&part;</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">X</mi>
+<mtext></mtext>
+</mrow></math> is the tangent map of 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">&phiv;</mi>
+<mtext></mtext>
+</mrow></math>.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a>   <center>	 <a href="cp-mass-solute.eps">Figure</a>
+	 
+<center>Figure 1: The continuum tissue with growing and diffusing
+	 species.</center>
+	 <a name="cp">
+</a>
+</center>
+<div class="p"><!----></div>
+The tissue consists of numerous species, of which the following
+ groupings are of importance for the models: A <em>solid</em> species,
+ consisting of solid collagen fibrils and cells,<a href="#tthFtNtAAB" name="tthFrefAAB">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>1</mn></mrow>
+</msup>
+</mrow></math></a> denoted by 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi fontstyle="normal">c</mi></mrow></math>, an
+ extra-cellular <em>fluid</em> species denoted by 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi fontstyle="normal">f</mi></mrow></math> and
+ consisting primarily of water, and <em>solute</em> species, consisting
+ of precursors to reactions, byproducts, nutrients, and other
+ regulatory chemicals. A generic solute will be denoted by
+ 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi fontstyle="normal">s</mi></mrow></math>. In what follows, an arbitrary species will be denoted
+ by 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&iota;</mi></mrow></math>, where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&iota;</mi><mo>=</mo><mi fontstyle="normal">c</mi><mo fontstyle="normal">,</mo><mi fontstyle="normal">f</mi><mo fontstyle="normal">,</mo><mi fontstyle="normal">s</mi></mrow></math>.
+
+<div class="p"><!----></div>
+The fundamental quantities of interest are mass concentrations,
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi>&iota;</mi></mrow></msubsup>
+<mo stretchy="false">(</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">X</mi>
+<mtext></mtext>
+<mo>,</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></math>. These are the masses of each species per unit
+system volume in 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub><mrow><mi>&Omega;</mi></mrow><mrow><mn>0</mn></mrow>
+</msub>
+</mrow></math>. Formally, these quantities can also be
+thought of in terms of the maps 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi>&iota;</mi></mrow></msubsup>
+<mo>:</mo>
+<msub><mrow>
+<mover><mrow><mi>&Omega;</mi></mrow>
+<mo stretchy="true">&OverBar;</mo></mover>
+</mrow><mrow><mn>0</mn></mrow>
+</msub>
+<mo>&times;</mo><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mi>T</mi><mo stretchy="false">]</mo><mo>&rarr;</mo><mi>R</mi></mrow></math>, upon which the formulation
+imposes some smoothness requirements. By definition, the total <em>
+material density</em> of the tissue at a point is a sum of these
+concentrations over all species 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<munder><mo>&sum;</mo><mrow><mi>&iota;</mi></mrow>
+</munder>
+
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi>&iota;</mi></mrow></msubsup>
+<mo>=</mo>
+<msub><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn></mrow>
+</msub>
+</mrow></math>. Other than the solid species, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi fontstyle="normal">c</mi></mrow></math>, all phases have
+mass fluxes, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">M</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow></math>. These are mass flow rates per unit
+cross-sectional area in the reference configuration <em>defined
+relative to the solid phase</em>. Except for the fluid, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi fontstyle="normal">f</mi></mrow></math>, all
+species have mass sources/sinks, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow></math>.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc2.1">
+2.1</a>&nbsp;&nbsp;Balance of mass for an open system</h3>
+<a name="bomass">
+</a> As a result of mass transport (via the flux terms) and
+inter-conversion of species (via the source/sink terms) introduced
+previously, the concentrations, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi>&iota;</mi></mrow></msubsup>
+</mrow></math>, change with time. In
+local form, the balance of mass for an arbitrary species in the
+reference configuration is
+
+<div class="p"><!----></div>
+<a name="massbalance1">
+</a><br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<mfrac><mrow><mo>&part;</mo>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi>&iota;</mi></mrow></msubsup>
+</mrow>
+<mrow><mo>&part;</mo><mi>t</mi></mrow>
+</mfrac>
+<mo>=</mo>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+<mo>-</mo>
+<mtext>DIV</mtext>
+<mo stretchy="false">[</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">M</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+<mo stretchy="false">]</mo><mo>,</mo><mi>&ensp;&ensp;</mi><mo>&forall;</mo><mi>&ensp;</mi><mi>&iota;</mi><mo>,</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ recalling that, in particular, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">M</mi>
+<mtext></mtext>
+</mrow><mrow><mi>s</mi></mrow>
+</msup>
+<mo>=</mo><mn>0</mn></mrow></math> and
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi>f</mi></mrow>
+</msup>
+<mo>=</mo><mn>0</mn></mrow></math>. Here, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext>DIV[]</mtext>
+</mrow></math> is the divergence
+operator in the reference configuration. The functional forms of
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow></math> are abstractions of the underlying biochemistry,
+physiologically relevant examples of which are discussed in Section
+<a href="#sources">3.4</a>, and the fluxes, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">M</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow></math>, are determined from the
+thermodynamically motivated constitutive relations described in
+Section <a href="#flux const">3.3</a>.
+
+<div class="p"><!----></div>
+The behaviour of the entire system can be determined by summing
+Equation (<a href="#massbalance1">1</a>) over all species 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&iota;</mi></mrow></math>.
+Additionally, sources and sinks satisfy the relation
+
+<div class="p"><!----></div>
+<a name="sourcebalance">
+</a><br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<munder><mo>&sum;</mo><mrow><mi>&iota;</mi></mrow>
+</munder>
+
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+<mo>=</mo><mn>0</mn><mo>,</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ which is consistent [<a href="#growthpaper" name="CITEgrowthpaper">Garikipati et&nbsp;al., 2004</a>] with the Law of Mass
+Action for reaction rates and with mixture theory
+[<a href="#TruesdellNoll:65" name="CITETruesdellNoll:65">Truesdell and Noll, 1965</a>].
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc2.1.1">
+2.1.1</a>&nbsp;&nbsp;The role of mass balance in the current
+configuration</h4><a name="curr-ref-mb">
+</a>
+
+<div class="p"><!----></div>
+Though it is not mathematically incorrect to solve the
+initial-boundary-value problem in terms of reference coordinates, it
+is important to note that as soft tissues deform, the current
+configuration, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub><mrow><mi>&Omega;</mi></mrow><mrow><mi>t</mi></mrow>
+</msub>
+</mrow></math>, and its boundary, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mo>&part;</mo>
+<msub><mrow><mi>&Omega;</mi></mrow><mrow><mi>t</mi></mrow>
+</msub>
+</mrow></math>,
+change in time. Even as the pore structure at the boundary deforms
+with the tissue, the fluid concentration with respect to 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub><mrow><mi>&Omega;</mi></mrow><mrow><mi>t</mi></mrow>
+</msub>
+</mrow></math>
+remains constant if the boundary is in contact with a fluid bath.
+Accordingly, this is the appropriate Dirichlet boundary condition to
+impose under normal physiological conditions. This is shown in an
+idealised manner in Figure <a href="#fbc">2</a>.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg2">
+</a> <center><a href="concentration.eps">Figure</a>
+
+<center>Figure 2: If the pore structure at the boundary deforms with the
+tissue and this boundary is in contact with a fluid bath, the
+fluid concentration with respect to the current configuration,
+i.e., 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow></math>, remains constant.</center><a name="fbc">
+</a>
+</center>
+<div class="p"><!----></div>
+In order to apply boundary conditions (either specification of
+species flux or concentration) that are physical, it is
+straightforward to use the local form of the balance of mass in
+the current configuration,
+
+<div class="p"><!----></div>
+<a name="massbalcurr">
+</a><br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<mfrac><mrow><mi fontstyle="normal">d</mi>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow>
+<mrow><mi fontstyle="normal">d</mi><mi>t</mi></mrow>
+</mfrac>
+<mo>=</mo>
+<msup><mrow><mi>&pi;</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+<mo>-</mo>
+<mtext>div</mtext>
+<mo stretchy="false">[</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">m</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+<mo stretchy="false">]</mo><mo>-</mo>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+
+<mtext>div</mtext>
+<mo stretchy="false">[</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">v</mi>
+<mtext></mtext>
+<mo stretchy="false">]</mo><mo>,</mo><mi>&ensp;&ensp;</mi><mo>&forall;</mo><mi>&ensp;</mi><mi>&iota;</mi><mo>,</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+<mo stretchy="false">(</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">x</mi>
+<mtext></mtext>
+<mo>,</mo><mi>t</mi><mo stretchy="false">)</mo><mo>,</mo>
+<msup><mrow><mi>&pi;</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+<mo fontstyle="normal" stretchy="false">(</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">x</mi>
+<mtext></mtext>
+<mo>,</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></math>, and
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">m</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+<mo stretchy="false">(</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">x</mi>
+<mtext></mtext>
+<mo>,</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></math> are the current mass concentration, source and mass
+flux of species 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&iota;</mi></mrow></math> respectively and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">v</mi>
+<mtext></mtext>
+</mrow></math> is the velocity of the
+solid phase.  The spatial divergence operator is
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext>div[]</mtext>
+</mrow></math>, and the time derivative on the left
+hand-side in Equation (<a href="#massbalcurr">3</a>) is the material time
+derivative, that may be written explicitly as
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mfrac><mrow><mo>&part;</mo></mrow>
+<mrow><mo>&part;</mo><mi>t</mi></mrow>
+</mfrac>
+
+<msub><mrow><mo stretchy="false">&verbar;</mo></mrow><mrow><mi>X</mi></mrow>
+</msub>
+</mrow></math>, implying that the reference
+position is held fixed.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc2.2">
+2.2</a>&nbsp;&nbsp;The kinematics of growth (changes in concentration)</h3>
+<a name="growthkinem">
+</a>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg3">
+</a>   <center>         <a href="kinematics.eps">Figure</a>
+     
+<center>Figure 3: The kinematics of growth.</center>
+     <a name="growthkine">
+</a>
+</center>
+<div class="p"><!----></div>
+Local volumetric changes are associated with changes in the
+concentrations of species. The material of the species swells with an
+increase in concentration (mass of the species per unit system
+volume), and shrinks as its concentration decreases. This leads to the
+notion of a <em>growth deformation gradient</em>. One aspect of the
+coupling between mass transport and mechanics stems from this
+phenomenon. In the setting of finite strain kinematics, the total
+deformation gradient is decomposed into the growth deformation
+gradient, a <em>geometrically-necessitated elastic deformation</em>
+accompanying growth, and an <em>additional elastic deformation due
+to external stress</em>. This split is analogous to the classical
+decomposition of multiplicative plasticity [<a href="#Lee:69" name="CITELee:69">Lee, 1969</a>] and is
+similar to the approach followed in existing literature on biological
+growth (see, for e.g., <a href="#TaberHumphrey:2001" name="CITETaberHumphrey:2001">Taber and Humphrey [2001]</a>,<a href="#AmbrosiMollica:2002" name="CITEAmbrosiMollica:2002">Ambrosi and Mollica [2002]</a>).
+
+<div class="p"><!----></div>
+The split itself is visualised in Figure <a href="#growthkine">3</a>.
+Assuming that the volume changes associated with growth described
+above are isotropic, a simple form for the growth deformation gradient
+tensor is
+
+<div class="p"><!----></div>
+<a name="isotropicgrowth">
+</a><br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">g</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow>
+</msup>
+<mo>=</mo>
+<mfrac><mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi>&iota;</mi></mrow></msubsup>
+</mrow>
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow>
+<msub><mrow><mn>0</mn></mrow><mrow><mi fontstyle="normal">ini</mi></mrow>
+</msub>
+ </mrow>
+<mrow><mi>&iota;</mi></mrow></msubsup>
+</mrow>
+</mfrac>
+<mn>1</mn><mo>,</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>4</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+ where
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow>
+<msub><mrow><mn>0</mn></mrow><mrow><mi fontstyle="normal">ini</mi></mrow>
+</msub>
+ </mrow>
+<mrow><mi>&iota;</mi></mrow></msubsup>
+<mo stretchy="false">(</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">X</mi>
+<mtext></mtext>
+<mo stretchy="false">)</mo></mrow></math> can be interpreted as the initial
+reference state where the species would be stress free in the absence
+of a deformation, and <b>1</b> is the second-order isotropic
+tensor. This being a local definition, the action of
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">g</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow>
+</msup>
+</mrow></math> alone can result in incompatibility, which is
+eliminated by the geometrically-necessary elastic deformation
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mover><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow>
+<mo stretchy="true">&tilde;</mo></mover>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">&iota;</mi></mrow>
+</msup>
+</mrow>
+</msup>
+</mrow></math>. Thus, the total
+deformation gradient
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+<mo>=</mo>
+<msup><mrow>
+<mover><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow>
+<mo stretchy="true">&OverBar;</mo></mover>
+</mrow><mrow><mi fontstyle="normal">e</mi></mrow>
+</msup>
+
+<msup><mrow>
+<mover><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow>
+<mo stretchy="true">&tilde;</mo></mover>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">&iota;</mi></mrow>
+</msup>
+</mrow>
+</msup>
+
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">g</mi></mrow><mrow><mi fontstyle="normal">&iota;</mi></mrow>
+</msup>
+</mrow>
+</msup>
+</mrow></math>, (where
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mover><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow>
+<mo stretchy="true">&OverBar;</mo></mover>
+</mrow><mrow><mi fontstyle="normal">e</mi></mrow>
+</msup>
+</mrow></math> arises from the external stress) and
+internal stresses in the tissue arise due to the compatibility
+restoring tensor 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mover><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow>
+<mo stretchy="true">&tilde;</mo></mover>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">&iota;</mi></mrow>
+</msup>
+</mrow>
+</msup>
+</mrow></math>.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc2.2.1">
+2.2.1</a>&nbsp;&nbsp;Saturation and tissue swelling</h4><a name="satswel">
+</a>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg4">
+</a> <center> <a href="composite.eps">Figure</a> 
+<center>Figure 4: Only
+under conditions of fluid saturation does an increase in fluid
+concentration cause tissue swelling.</center>
+
+<div class="p"><!----></div>
+<a name="satswelfig">
+</a></center>
+<div class="p"><!----></div>
+ Upon closer examination of the solid phase of the tissue as
+a porous medium, it is observed that its degree of saturation plays a
+fundamental role in determining whether the tissue responds by
+swelling or shrinking to an infusion or expulsion of fluid. In
+particular, the isotropic swelling law defined by Equation
+(<a href="#isotropicgrowth">4</a>) has to be generalised to handle the case in
+which the solid phase is not saturated by fluid.
+
+<div class="p"><!----></div>
+Figure <a href="#satswelfig">4</a> schematically depicts two potential
+scenarios. If the tissue is initially unsaturated (as in A), this
+corresponds to the fact that, on a microscopic scale, it still
+contains unfilled voids. It is thus capable of allowing an influx of
+fluid, which tends to increase its degree of saturation (to reach B),
+but does not cause the tissue to swell, as there exists space for
+incoming fluid to occupy. However, if the tissue was initially
+saturated (as in C), an increase in the amount of fluid will result in
+swelling (as depicted in D), as there is no free volume for the
+entering fluid to occupy. It is this second case that is modelled by
+(<a href="#isotropicgrowth">4</a>).
+
+<div class="p"><!----></div>
+The isotropic swelling law can be extended to the unsaturated case by
+introducing a degree of saturation arising in a natural fashion from
+the current concentrations, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow></math>. These quantities can also be
+thought of as the product of the intrinsic density of the species,
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mover><mrow><mi>&rho;</mi></mrow>
+<mo>~</mo></mover>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow></math>, and the corresponding volume fraction,
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mover><mrow><mi>v</mi></mrow>
+<mo>~</mo></mover>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow></math>, in the current configuration. Upon solution of the
+mass balance equation (<a href="#massbalcurr">3</a>) for 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow></math>, the
+species volume fractions, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mover><mrow><mi>v</mi></mrow>
+<mo>~</mo></mover>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow></math>, can be computed since the
+intrinsic densities are known material properties. The sum of these
+volume fractions is our required measure of saturation, and clearly
+cannot exceed unity in the current configuration. We thus proceed to
+redefine the growth deformation gradient tensor as follows:
+
+<div class="p"><!----></div>
+<br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">g</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow>
+</msup>
+<mo>=</mo><mrow><mo>{</mo>
+<mtable>
+<mtr><mtd columnalign="left"><mrow><mn>1</mn><mo>,</mo></mrow></mtd><mtd columnalign="left"><mrow>
+<munder><mo>&sum;</mo><mrow><mi>&iota;</mi></mrow>
+</munder>
+
+<msup><mrow>
+<mover><mrow><mi>v</mi></mrow>
+<mo>~</mo></mover>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+<mo>&lt;</mo><mn>1</mn></mrow></mtd></mtr>
+<mtr><mtd columnalign="left"><mrow>
+<mfrac><mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi>&iota;</mi></mrow></msubsup>
+</mrow>
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow>
+<msub><mrow><mn>0</mn></mrow><mrow><mi fontstyle="normal">ini</mi></mrow>
+</msub>
+ </mrow>
+<mrow><mi>&iota;</mi></mrow></msubsup>
+</mrow>
+</mfrac>
+<mn>1</mn><mo>,</mo></mrow></mtd><mtd columnalign="left"><mrow><mi fontstyle="normal">otherwise</mi><mo fontstyle="normal">.</mo></mrow></mtd></mtr></mtable>
+
+<mo> </mo></mrow></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>5</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+However, it is important to note that under normal physiological
+conditions, soft tissues are fully saturated by the fluid and
+Equation (<a href="#isotropicgrowth">4</a>) is appropriate.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc2.3">
+2.3</a>&nbsp;&nbsp;Balance of momenta</h3>
+<a name="bomom">
+</a>
+
+<div class="p"><!----></div>
+In soft tissues, the species production rate and flux that appear on
+the right hand-side in Equation (<a href="#massbalance1">1</a>), are strongly
+dependent on the local state of stress. To correctly model this
+coupling, the balance of linear momentum should be solved to determine
+the local state of strain and stress.
+
+<div class="p"><!----></div>
+The deformation of the tissue is characterised by the map
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">&phiv;</mi>
+<mtext></mtext>
+<mo stretchy="false">(</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">X</mi>
+<mtext></mtext>
+<mo>,</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></math>. Recognising that, in tendons, the solid collagen
+fibrils and fibroblasts do not undergo mass
+transport,<a href="#tthFtNtAAC" name="tthFrefAAC">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>2</mn></mrow>
+</msup>
+</mrow></math></a> the material velocity of
+this species, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">V</mi>
+<mtext></mtext>
+<mo>=</mo><mo>&part;</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">&phiv;</mi>
+<mtext></mtext>
+<mo stretchy="false">/</mo><mo>&part;</mo><mi>t</mi></mrow></math>, is used as the
+primitive variable for mechanics. The motion of each remaining species
+is split into a deformation along with the solid species, and mass
+transport relative to it. To this end, it is useful to define the
+material velocity of a species 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&iota;</mi></mrow></math> <em>relative to the solid
+skeleton</em> as: 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">V</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+<mo>=</mo><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">/</mo>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi>&iota;</mi></mrow></msubsup>
+<mo stretchy="false">)</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">M</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow></math>. Thus, the
+total material velocity of a species 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&iota;</mi></mrow></math> is 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">V</mi>
+<mtext></mtext>
+<mo>+</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">V</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow></math>.
+
+<div class="p"><!----></div>
+The total first Piola-Kirchhoff stress tensor, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">P</mi>
+<mtext></mtext>
+</mrow></math>, is the sum of
+the partial stresses 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">P</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow></math> (borne by a species 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&iota;</mi></mrow></math>) over all
+the species present.<a href="#tthFtNtAAD" name="tthFrefAAD">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>3</mn></mrow>
+</msup>
+</mrow></math></a> With the introduction of these quantities, the
+balance of linear momentum in local form for a species 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&iota;</mi></mrow></math> in
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub><mrow><mi>&Omega;</mi></mrow><mrow><mn>0</mn></mrow>
+</msub>
+</mrow></math> is
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+ where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">g</mi>
+<mtext></mtext>
+</mrow></math> is the body force per unit mass, and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">q</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow></math>
+is an interaction term denoting the force per unit mass exerted upon
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&iota;</mi></mrow></math> by all other species present. The final term with the
+(reference) gradient denotes the contribution of the flux to the
+balance of momentum. In practise, the relative magnitude of the fluid
+mobility (and hence flux) is small, so the final term on the right
+hand side of Equation (<a href="#linearmombalance">6</a>) is negligible,
+resulting in a more classical form of the balance of
+momentum. Furthermore, in the absence of significant acceleration of
+the tissue during growth, the left hand-side can also be neglected,
+reducing (<a href="#linearmombalance">6</a>) to the quasi-static balance of
+linear momentum.
+
+<div class="p"><!----></div>
+The balance of momentum of the entire tissue is obtained by summing
+Equation (<a href="#linearmombalance">6</a>) over all 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&iota;</mi></mrow></math>. Additionally,
+recognising that the rate of change of momentum of the entire tissue
+is affected only by external agents and is independent of internal
+interactions, the following relation arises.
+
+<div class="p"><!----></div>
+<a name="qrelation">
+</a><br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<munder><mo>&sum;</mo><mrow><mi>&iota;</mi></mrow>
+</munder>
+<mrow><mo>(</mo>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi>&iota;</mi></mrow></msubsup>
+
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">q</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+<mo>+</mo>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">V</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+<mo>)</mo></mrow><mo>=</mo><mn>0</mn><mo>.</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>6</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ This is also consistent with classical mixture theory
+[<a href="#TruesdellNoll:65" name="CITETruesdellNoll:65">Truesdell and Noll, 1965</a>]. See <a href="#growthpaper" name="CITEgrowthpaper">Garikipati et&nbsp;al. [2004]</a> for further
+details on balance of linear momentum, and the formulation of
+balance of angular momentum. We only note here that the latter
+principle leads to a symmetric partial Cauchy stress,
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">&sigma;</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow></math> for each species in contrast with the unsymmetric
+Cauchy stress of <a href="#EpsteinMaugin:2000" name="CITEEpsteinMaugin:2000">Epstein and Maugin, [2000</a>].
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc3">
+3</a>&nbsp;&nbsp;Constitutive framework and modelling choices</h2>
+<a name="sec:3">
+</a>
+
+<div class="p"><!----></div>
+As is customary in field theories of continuum physics, the
+Clausius-Duhem inequality is obtained by multiplying the entropy
+inequality (the Second Law of thermodynamics) by the temperature
+field, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&theta;</mi></mrow></math>, and subtracting it from the balance of energy (the
+First Law of thermodynamics). We assume the internal energy per unit
+reference volume of species 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&iota;</mi></mrow></math> to be of a sufficiently general
+form: 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>e</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+<mo>=</mo>
+<msup><mrow>
+<mover><mrow><mi>e</mi></mrow>
+<mo>&Hat;</mo></mover>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+<mo stretchy="false">(</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow>
+</msup>
+<mo>,</mo>
+<msubsup><mrow><mi>&eta;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi>&iota;</mi></mrow></msubsup>
+<mo>,</mo>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi>&iota;</mi></mrow></msubsup>
+<mo stretchy="false">)</mo></mrow></math>, where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&eta;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi>&iota;</mi></mrow></msubsup>
+</mrow></math> is the entropy per
+unit system volume.  Substituting this in the Clausius-Duhem
+inequality results in a form of this inequality that the specified
+constitutive relations <em>must not</em> violate. Only the valid
+constitutive laws relevant to the examples that follow are listed
+here. For details, see <a href="#growthpaper" name="CITEgrowthpaper">Garikipati et&nbsp;al., [2004</a>].
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.1">
+3.1</a>&nbsp;&nbsp;An anisotropic network model based on entropic
+elasticity</h3><a name="wlcm">
+</a>
+
+<div class="p"><!----></div>
+Each constituent of the tissue has a mass-specific Helmholtz free
+energy density, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>&psi;</mi></mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+</mrow></math>. Utilising the material response of a
+hyperelastic material, the partial first Piola-Kirchhoff stress of
+collagen is 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">P</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+<mo>=</mo>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+<mo>&part;</mo>
+<msup><mrow><mi>&psi;</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+<mo stretchy="false">/</mo><mo>&part;</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+</mrow>
+</msup>
+</mrow></math>. Here,
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+</mrow>
+</msup>
+<mo>=</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">g</mi></mrow><mrow>
+<msup><mrow><mi fontstyle="normal">c</mi></mrow><mrow><mo>-</mo><mn>1</mn></mrow>
+</msup>
+</mrow>
+</msup>
+</mrow>
+</msup>
+</mrow></math>
+is the elastic deformation gradient, and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">g</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+</mrow>
+</msup>
+</mrow></math>
+is the growth deformation gradient, of collagen. Along the lines of
+Equation (<a href="#isotropicgrowth">4</a>), if we were considering
+unidirectional growth of collagen along a unit vector 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">e</mi>
+<mtext></mtext>
+</mrow></math>, we have
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">g</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+</mrow>
+</msup>
+<mo>=</mo>
+<mfrac><mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi fontstyle="normal">c</mi></mrow></msubsup>
+</mrow>
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow>
+<msub><mrow><mn>0</mn></mrow><mrow><mi fontstyle="normal">ini</mi></mrow>
+</msub>
+ </mrow>
+<mrow><mi fontstyle="normal">c</mi></mrow></msubsup>
+</mrow>
+</mfrac>
+
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">e</mi>
+<mtext></mtext>
+<mo>&otimes;</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">e</mi>
+<mtext></mtext>
+</mrow></math>, with
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow>
+<msub><mrow><mn>0</mn></mrow><mrow><mi fontstyle="normal">ini</mi></mrow>
+</msub>
+ </mrow>
+<mrow><mi fontstyle="normal">c</mi></mrow></msubsup>
+</mrow></math> denoting the initial concentration
+of collagen at the point.
+
+<div class="p"><!----></div>
+The mechanical response (function) of tendons in tension is determined
+by their dominant structural component, highly oriented fibrils of
+collagen. In our preliminary formulation, the strain energy density
+for collagen has been obtained from hierarchical multi-scale
+considerations based upon an entropic elasticity-based worm-like chain
+(WLC) model [<a href="#KratkyPorod:49" name="CITEKratkyPorod:49">Kratky and Porod, 1949</a>]. The WLC model has been widely used
+for long chain single molecules, most prominently for DNA
+[<a href="#MarkoSiggia:95" name="CITEMarkoSiggia:95">Marko and Siggia, 1995</a>,<a href="#Riefetal:97" name="CITERiefetal:97">Rief et&nbsp;al., 1997</a>,<a href="#Bustamanteetal:2003" name="CITEBustamanteetal:2003">Bustamante et&nbsp;al., 2003</a>], and recently
+for the collagen monomer [<a href="#Sunetal:2002" name="CITESunetal:2002">Sun et&nbsp;al., 2002</a>]. The central
+parameters of this model are the chain's contour length, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>L</mi></mrow></math>, and
+persistence length, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>A</mi></mrow></math>. The latter is a measure of its stiffness and
+given by 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>A</mi><mo>=</mo><mi>&chi;</mi><mo stretchy="false">/</mo><mi>k</mi><mi>&theta;</mi></mrow></math>, where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&chi;</mi></mrow></math> is the bending rigidity, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>k</mi></mrow></math>
+is Boltzmann's constant and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&theta;</mi></mrow></math> is the temperature
+[<a href="#LandLif" name="CITELandLif">Landau and Lifshitz, 1951</a>]. We have fitted the WLC response function derived by
+<a href="#MarkoSiggia:95" name="CITEMarkoSiggia:95">Marko and Siggia [1995]</a> to the collagen fibril data of
+<a href="#Grahametal:2004" name="CITEGrahametal:2004">Graham et&nbsp;al. [2004]</a> with 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>A</mi><mo>=</mo><mn>6</mn></mrow></math> nm and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>L</mi><mo>=</mo><mn>3480</mn></mrow></math> nm. This is to
+be compared with 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>A</mi><mo>=</mo><mn>14</mn><mo>.</mo><mn>5</mn></mrow></math> nm and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>L</mi><mo>=</mo><mn>309</mn></mrow></math> nm, reported by
+<a href="#Sunetal:2002" name="CITESunetal:2002">Sun et&nbsp;al. [2002]</a>, for a <em>single</em> collagen molecule. Taken
+together, these results demonstrate that the WLC analysis correctly
+predicts a collagen fibril to be longer and slightly more compliant
+than its constituent molecule due to compliant intermolecular
+cross-links in a fibril. To model the possibility of a collagen
+network structure, the WLC model has been embedded as a single
+constituent chain of an eight-chain model [<a href="#Bischoffetal:2002" name="CITEBischoffetal:2002">Bischoff et&nbsp;al., 2002a</a>,<a href="#Bischoffetal1:2002" name="CITEBischoffetal1:2002">Bischoff et&nbsp;al., 2002b</a>], depicted in Figure <a href="#eightchain">5</a>.
+Homogenisation via averaging then leads to a continuum Helmholtz
+strain energy function, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&psi;</mi></mrow><mrow><mi>F</mi> </mrow>
+<mrow><mi fontstyle="normal">c</mi></mrow></msubsup>
+</mrow></math>:<a href="#tthFtNtAAE" name="tthFrefAAE">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>4</mn></mrow>
+</msup>
+</mrow></math></a>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+Here, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi fontstyle="normal">c</mi></mrow></msubsup>
+</mrow></math> is the concentration of collagen, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>N</mi></mrow></math> is
+the density of chains, and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>a</mi><mo>,</mo><mi>b</mi></mrow></math> and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>c</mi></mrow></math> are lengths of the unit cell
+sides aligned with the principal stretch directions. The material
+model is isotropic only if 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>a</mi><mo>=</mo><mi>b</mi><mo>=</mo><mi>c</mi></mrow></math>.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg5">
+</a> <center> <a href="wlcm-cuboid.eps">Figure</a>
+
+<center>Figure 5: <font size="-1">The eight-chain model incorporating worm-like
+  chains.</font></center><a name="eightchain">
+</a>
+</center>
+<div class="p"><!----></div>
+The elastic stretches along the unit cell axes are respectively
+denoted by
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&lambda;</mi></mrow><mrow><mn>1</mn> </mrow>
+<mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+</mrow></msubsup>
+<mo>,</mo>
+<msubsup><mrow><mi>&lambda;</mi></mrow><mrow><mn>2</mn> </mrow>
+<mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+</mrow></msubsup>
+</mrow></math>
+and 
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&lambda;</mi></mrow><mrow><mn>3</mn> </mrow>
+<mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+</mrow></msubsup>
+</mrow></math>, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">C</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+</mrow>
+</msup>
+<mo>=</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow>
+<msup><mrow><mi fontstyle="normal">c</mi></mrow><mrow><mi fontstyle="normal">T</mi></mrow>
+</msup>
+</mrow>
+</msup>
+</mrow>
+</msup>
+
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+</mrow>
+</msup>
+</mrow></math> is the elastic right Cauchy-Green
+strain tensor of collagen and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mn>1</mn></mrow></math> is the second-order isotropic
+tensor. The factors 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&gamma;</mi></mrow></math> and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&beta;</mi></mrow></math> control the bulk
+compressibility of the model. The end to end chain length is given by
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>r</mi><mo>=</mo>
+<mfrac><mrow><mn>1</mn></mrow>
+<mrow><mn>2</mn></mrow>
+</mfrac>
+<msqrt><mrow>
+<msup><mrow><mi>a</mi></mrow><mrow><mn>2</mn></mrow>
+</msup>
+
+<msubsup><mrow><mi>&lambda;</mi></mrow><mrow><mn>1</mn> </mrow>
+<mrow><mn>2</mn></mrow></msubsup>
+<mo>+</mo>
+<msup><mrow><mi>b</mi></mrow><mrow><mn>2</mn></mrow>
+</msup>
+
+<msubsup><mrow><mi>&lambda;</mi></mrow><mrow><mn>2</mn> </mrow>
+<mrow><mn>2</mn></mrow></msubsup>
+<mo>+</mo>
+<msup><mrow><mi>c</mi></mrow><mrow><mn>2</mn></mrow>
+</msup>
+
+<msubsup><mrow><mi>&lambda;</mi></mrow><mrow><mn>3</mn> </mrow>
+<mrow><mn>2</mn></mrow></msubsup>
+</mrow></msqrt></mrow></math>, where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub><mrow><mi>&lambda;</mi></mrow><mrow><mi>I</mi></mrow>
+</msub>
+<mo>=</mo><msqrt><mrow>
+<msub><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">N</mi>
+<mtext></mtext>
+</mrow><mrow><mi>I</mi></mrow>
+</msub>
+<mo>&middot;</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">C</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+</mrow>
+</msup>
+
+<msub><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">N</mi>
+<mtext></mtext>
+</mrow><mrow><mi>I</mi></mrow>
+</msub>
+</mrow></msqrt></mrow></math>, and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">N</mi>
+<mtext></mtext>
+</mrow><mrow><mi>I</mi></mrow>
+</msub>
+<mo>,</mo><mi>&ensp;</mi><mi>I</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn></mrow></math> are the unit vectors along the three unit cell axes,
+respectively. In our numerical simulations that appear below in
+Section <a href="#numericalimplementation">4</a>, the numerical values used for
+the parameters introduced in (<a href="#wlcmeq">8</a>) have been based off those
+in <a href="#kuhlremod05" name="CITEkuhlremod05">Kuhl et&nbsp;al. [2005]</a>.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.2">
+3.2</a>&nbsp;&nbsp;A nearly incompressible ideal fluid</h3>
+
+<div class="p"><!----></div>
+In this preliminary work, the fluid phase is treated as a nearly
+incompressible, ideal, i.e., inviscid, fluid. The partial Cauchy
+stress in the fluid is
+<a name="Pf">
+</a><br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">&sigma;</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo>=</mo><mi fontstyle="normal">det</mi><mo stretchy="false">(</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow>
+</msup>
+
+<msup><mrow><mo stretchy="false">)</mo></mrow><mrow><mo>-</mo><mn>1</mn></mrow>
+</msup>
+
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">P</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">fT</mi></mrow>
+</msup>
+</mrow>
+</msup>
+<mo>=</mo><mi>h</mi><mo stretchy="false">(</mo>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo stretchy="false">)</mo><mn>1</mn><mo>,</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>7</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ where a large value of 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>h</mi></mrow><mrow><mo>'</mo></mrow>
+</msup>
+<mo stretchy="false">(</mo>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo stretchy="false">)</mo><mo>=</mo>
+<mfrac><mrow><mi>d</mi><mi>h</mi><mo stretchy="false">(</mo>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo stretchy="false">)</mo></mrow>
+<mrow><mi>d</mi>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow>
+</mfrac>
+</mrow></math> ensures
+near-incompressibility. 
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc3.2.1">
+3.2.1</a>&nbsp;&nbsp;Response of the fluid in tension;
+cavitation</h4><a name="tensionfluid">
+</a>
+
+<div class="p"><!----></div>
+The response of the ideal fluid, as defined by Equation
+  (<a href="#Pf">9</a>), does not explicitly distinguish between the cases where
+  the fluid is subjected to tension or compression, i.e., whether
+  
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi fontstyle="normal">det</mi><mo stretchy="false">(</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow>
+</msup>
+<mo stretchy="false">)</mo><mn>1</mn></mrow></math>. When the
+  fluid phase is subjected to compression, being (nearly)
+  incompressible, it can develop compressive stresses without bound
+  and is modelled accurately. Under tension, the fluid can develop at
+  most a small tensile stress [<a href="#cavitationchris" name="CITEcavitationchris">Brennen, 1995</a>],<a href="#tthFtNtAAF" name="tthFrefAAF">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>5</mn></mrow>
+</msup>
+</mrow></math></a> and the bulk of the
+  tensile stiffness 
+  arises from the collagen phase.This is not accurately represented by
+  (<a href="#Pf">9</a>), which predicts a tensile response in the fluid similar
+  to the compressive response.
+
+<div class="p"><!----></div>
+Here, we preclude all tensile load carrying by the fluid by limiting
+  
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi fontstyle="normal">det</mi><mo stretchy="false">(</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow>
+</msup>
+<mo stretchy="false">)</mo><mo>&le;</mo><mn>1</mn></mrow></math>. For consistency,
+  we first introduce an additional component to the mixture, a <em>
+  void</em> species, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi fontstyle="normal">v</mi></mrow></math>. Denoting its deformation gradient by
+  
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">v</mi></mrow>
+</msup>
+</mrow></math>, we now only require
+
+<div class="p"><!----></div>
+<br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">v</mi></mrow>
+</msup>
+
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow>
+</msup>
+<mo>=</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+<mo>,</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>8</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow></math> is the pointwise homogeneous deformation
+ gradient. If
+ 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi fontstyle="normal">det</mi><mo stretchy="false">(</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+<mo stretchy="false">)</mo><mo>&lt;</mo><mn>1</mn></mrow></math>,<a href="#tthFtNtAAG" name="tthFrefAAG">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>6</mn></mrow>
+</msup>
+</mrow></math></a> we set
+ 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">v</mi></mrow>
+</msup>
+<mo>=</mo><mn>1</mn></mrow></math>, denoting a collapse of voids and a return
+ to saturation. Otherwise, we set
+
+<div class="p"><!----></div>
+<br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mi fontstyle="normal">det</mi><mo stretchy="false">(</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow>
+</msup>
+<mo stretchy="false">)</mo><mo>=</mo><mn>1</mn></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>9</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ and determine 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi fontstyle="normal">det</mi><mo stretchy="false">(</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">v</mi></mrow>
+</msup>
+<mo stretchy="false">)</mo></mrow></math> using the
+relation
+
+<div class="p"><!----></div>
+<br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">v</mi></mrow>
+</msup>
+<mo>=</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">e</mi></mrow><mrow>
+<msup><mrow><mi fontstyle="normal">f</mi></mrow><mrow><mo>-</mo><mn>1</mn></mrow>
+</msup>
+</mrow>
+</msup>
+</mrow>
+</msup>
+<mo>.</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>10</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ In this manner, we allow the
+  pores to evacuate, (i.e. allow 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi fontstyle="normal">det</mi><mo stretchy="false">(</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">v</mi></mrow>
+</msup>
+<mo stretchy="false">)</mo><mo>&gt;</mo><mn>1</mn></mrow></math>), giving us an additional measure of the unsaturation in the
+  system.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.3">
+3.3</a>&nbsp;&nbsp;Constitutive relations for fluxes</h3>
+<a name="flux const">
+</a>
+
+<div class="p"><!----></div>
+From <a href="#growthpaper" name="CITEgrowthpaper">Garikipati et&nbsp;al. [2004]</a>, the constitutive relation for the flux of
+extra-cellular fluid relative to the collagen takes the following
+form,
+
+<div class="p"><!----></div>
+<a name="fluidflux">
+</a><br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">M</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo>=</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mrow><mo>(</mo>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow><mi>T</mi></mrow>
+</msup>
+
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">g</mi>
+<mtext></mtext>
+<mo>+</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow><mi>T</mi></mrow>
+</msup>
+
+<mtext>DIV</mtext>
+<mrow><mo>[</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">P</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo>]</mo></mrow><mo>-</mo>
+<mtext>GRAD</mtext>
+<mrow><mo>[</mo>
+<msup><mrow><mi>e</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo>-</mo><mi>&theta;</mi>
+<msup><mrow><mi>&eta;</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo>]</mo></mrow><mo>)</mo></mrow><mo>,</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>11</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow></math> is the positive semi-definite
+mobility of the fluid and isothermal conditions are assumed to
+approximate the physiological ones. Experimentally determined
+transport coefficients (e.g. for rat tail skin [<a href="#Swartzetal:99" name="CITESwartzetal:99">Swartz et&nbsp;al., 1999</a>]
+and rabbit Achilles tendons [<a href="#Hanetal:2000" name="CITEHanetal:2000">Han et&nbsp;al., 2000</a>]) are used for the
+fluid mobility values. The terms in the parenthesis on the right
+hand-side of Equation (<a href="#fluidflux">13</a>) sum up to give the
+total driving force for transport. The first term is the contribution
+due to gravitational acceleration. In order to maintain physiological
+relevance, this term has been neglected in the following
+treatment. The second term arises from stress divergence; for an ideal
+fluid, it reduces to a pressure gradient, thereby specifying that the
+fluid moves down a compressive pressure gradient, which is Darcy's
+Law. The third term can be thought of as the gradient of a chemical
+potential. The included entropy gradient in this term results in
+classical Fickean diffusion if only mixing entropy exists. For a
+detailed derivation and discussion of Equation
+(<a href="#fluidflux">13</a>), the reader is directed to <a href="#growthpaper" name="CITEgrowthpaper">Garikipati et&nbsp;al. [2004]</a>.
+
+<div class="p"><!----></div>
+Since the driving forces in (<a href="#fluidflux">13</a>) originate from different
+physics, it proves useful (as seen in the following subsection) to
+split the mobility, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow></math>, into permeability
+(stress-gradient driven) and diffusion (chemical potential gradient
+driven) mobilities:
+
+<div class="p"><!----></div>
+<a name="splitflux">
+</a><br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">M</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo>=</mo>
+<msubsup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow><mrow><mi>P</mi> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow><mi>T</mi></mrow>
+</msup>
+
+<mtext>DIV</mtext>
+<mrow><mo>[</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">P</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo>]</mo></mrow><mo>-</mo>
+<msubsup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&mu;</mi> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+
+<mtext>GRAD</mtext>
+<mrow><mo>[</mo>
+<msup><mrow><mi>e</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo>-</mo><mi>&theta;</mi>
+<msup><mrow><mi>&eta;</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo>]</mo></mrow><mo>,</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>12</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow><mrow><mi>P</mi> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+</mrow></math> is now the permeability of the
+tissue and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&mu;</mi> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+</mrow></math> is the mobility of the fluid phase
+through the porous solid.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc3.3.1">
+3.3.1</a>&nbsp;&nbsp;Saturation and Fickean diffusion</h4>
+<a name="fick">
+</a>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg6">
+</a> <center><a href="fickian.eps">Figure</a>
+<a href="unfickian.eps">Figure</a>
+
+<center>Figure 6: Only unsaturated tissues can undergo Fickean diffusion.</center>
+<a name="fick_fig">
+</a>
+</center>
+<div class="p"><!----></div>
+As depicted in Figure <a href="#fick_fig">6</a>, only when pores are unsaturated
+are there multiple configurations 
+available to the fluid molecules at a fixed fluid concentration.  This
+leads to a non-zero mixing entropy. In contrast, if saturated, there
+is a single available configuration (degeneracy), resulting in
+zero mixing entropy. Consequently, Fickean diffusion, which arises
+from the gradient of mixing entropy can exist only in the unsaturated
+case. However, even a saturated pore structure can demonstrate
+concentration gradient-dependent mass transport phenomenologically: The
+fluid stress depends on fluid concentration, see Equation (<a href="#Pf">9</a>),
+and fluid stress gradient-driven flux appears as concentration
+gradient-driven flux.
+
+<div class="p"><!----></div>
+The saturation dependence of Fickean diffusion is modelled by using
+the measure of saturation introduced in Subsection <a href="#satswel">2.2.1</a>. We
+first rewrite the chemical potential gradient term in
+(<a href="#splitflux">14</a>) as
+
+<div class="p"><!----></div>
+<br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<msubsup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&mu;</mi> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+
+<mtext>GRAD</mtext>
+<mrow><mo>[</mo>
+<msup><mrow><mi>e</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo>-</mo><mi>&theta;</mi>
+<msup><mrow><mi>&eta;</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo>]</mo></mrow><mo>=</mo>
+<msubsup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow><mrow><mi>e</mi> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+
+<mtext>GRAD</mtext>
+<mrow><mo>[</mo>
+<msup><mrow><mi>e</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo>]</mo></mrow><mo>-</mo>
+<msubsup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&eta;</mi> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+
+<mtext>GRAD</mtext>
+<mrow><mo>[</mo><mi>&theta;</mi>
+<msup><mrow><mi>&eta;</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo>]</mo></mrow><mo>,</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>13</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow><mrow><mi>e</mi> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+</mrow></math> and
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&eta;</mi> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+</mrow></math> are positive semi-definite
+mobilities, and the mobility for the Fickean contribution is
+
+<div class="p"><!----></div>
+<br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<msubsup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&eta;</mi> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+<mo>=</mo><mrow><mo>{</mo>
+<mtable>
+<mtr><mtd columnalign="left"><mrow>
+<msubsup><mrow>
+<mover><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow>
+<mo stretchy="true">&tilde;</mo></mover>
+</mrow><mrow><mi>&eta;</mi> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+<mo>,</mo><mi>&emsp;&emsp;&emsp;</mi></mrow></mtd><mtd columnalign="left"><mrow><mi fontstyle="normal">if</mi><mi>&emsp;&emsp;&emsp;</mi>
+<munder><mo>&sum;</mo><mrow><mi>&iota;</mi></mrow>
+</munder>
+
+<msup><mrow>
+<mover><mrow><mi>v</mi></mrow>
+<mo>~</mo></mover>
+</mrow><mrow><mi>&iota;</mi></mrow>
+</msup>
+<mo>&lt;</mo><mn>1</mn></mrow></mtd></mtr>
+<mtr><mtd columnalign="left"><mrow><mn>0</mn><mo>,</mo></mrow></mtd><mtd columnalign="left"><mrow><mi fontstyle="normal">otherwise</mi><mo fontstyle="normal">.</mo></mrow></mtd></mtr></mtable>
+
+<mo> </mo></mrow></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>14</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ It is again important to note that under physiological
+conditions, soft tissues are fully saturated by fluid, and it is
+appropriate to set 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow><mrow><mi>&eta;</mi> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+<mo>=</mo><mn>0</mn></mrow></math>.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc3.3.2">
+3.3.2</a>&nbsp;&nbsp;Transport of solute species</h4>
+<a name="solutespecies">
+</a>
+
+<div class="p"><!----></div>
+The numerous dissolved solute species (proteins, sugars, nutrients,
+...), denoted by s, undergo long range transport primarily by being
+advected by the perfusing fluid. In addition to this, they undergo
+transport relative to the fluid. This motivates an additional velocity
+split of the form 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">V</mi>
+<mtext></mtext>
+</mrow><mrow><mi>s</mi></mrow>
+</msup>
+<mo>=</mo>
+<mover><mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">V</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+</mrow>
+<mo stretchy="true">&tilde;</mo></mover>
+<mo>+</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">V</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow></math>,
+where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mover><mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">V</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+</mrow>
+<mo stretchy="true">&tilde;</mo></mover>
+</mrow></math> denotes the velocity of the solute
+relative to the fluid. The constitutive relation for the corresponding
+flux, denoted by 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mover><mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">M</mi>
+<mtext></mtext>
+</mrow><mrow><mi>s</mi></mrow>
+</msup>
+</mrow>
+<mo stretchy="true">&tilde;</mo></mover>
+</mrow></math>, has the following form, similar
+to Equation (<a href="#fluidflux">13</a>) defined for the fluid flux.
+
+<div class="p"><!----></div>
+<a name="soluteflux">
+</a><br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<mover><mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">M</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+</mrow>
+<mo stretchy="true">&tilde;</mo></mover>
+<mo>=</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+<mrow><mo>(</mo><mo>-</mo>
+<mtext>GRAD</mtext>
+<mrow><mo>[</mo>
+<msup><mrow><mi>e</mi></mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+<mo>-</mo><mi>&theta;</mi>
+<msup><mrow><mi>&eta;</mi></mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+<mo>]</mo></mrow><mo>)</mo></mrow><mo>,</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>15</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">D</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+</mrow></math> is the positive semi-definite
+mobility of the solute relative to the fluid, and again, isothermal
+conditions are assumed to approximate the physiological ones. Being in
+solution, this phase does not bear appreciable stress, and the stress
+divergence term is absent from the constitutive relation.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc3.3.3">
+3.3.3</a>&nbsp;&nbsp;Objectivity and the contribution from acceleration</h4>
+<a name="dropping_accn">
+</a>
+
+<div class="p"><!----></div>
+In our earlier treatment [<a href="#growthpaper" name="CITEgrowthpaper">Garikipati et&nbsp;al., 2004</a>], the constitutive
+relation for the fluid flux had a driving force contribution arising
+from the acceleration of the solid phase,
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mo>-</mo>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">T</mi></mrow>
+</msup>
+
+<mfrac><mrow><mo>&part;</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">V</mi>
+<mtext></mtext>
+</mrow>
+<mrow><mo>&part;</mo><mi>t</mi></mrow>
+</mfrac>
+</mrow></math>.
+This term, being motivated by the reduced dissipation inequality, does
+not violate the Second Law and supports our intuitive understanding
+that accelerating the solid skeleton in one direction must result in
+an inertial driving force on the fluid in the opposite
+direction. However, as defined, this acceleration is obtained by the
+time differentiation of kinematic quantities,<a href="#tthFtNtAAH" name="tthFrefAAH">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>7</mn></mrow>
+</msup>
+</mrow></math></a> and does not transform in a
+frame-indifferent manner. Unlike the superficially similar term
+arising from the gravity vector,<a href="#tthFtNtAAI" name="tthFrefAAI">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>8</mn></mrow>
+</msup>
+</mrow></math></a> the acceleration
+term presents an improper dependence on the frame of the
+observer. Thus, its use in constitutive relations is inappropriate,
+and the term has been dropped in Equation (<a href="#fluidflux">13</a>).
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc3.3.4">
+3.3.4</a>&nbsp;&nbsp;Incompressible fluid in a porous solid</h4>
+<a name="incompfluid">
+</a>
+
+<div class="p"><!----></div>
+Upon incorporation of the additional velocity split,
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">V</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+<mo>=</mo>
+<mover><mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">V</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+</mrow>
+<mo stretchy="true">&tilde;</mo></mover>
+<mo>+</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">V</mi>
+<mtext></mtext>
+</mrow><mrow><mi>f</mi></mrow>
+</msup>
+</mrow></math>, described in
+Subsection <a href="#solutespecies">3.3.2</a>, the resulting mass transport equation
+(<a href="#massbalcurr">3</a>) for the solute species is
+
+<div class="p"><!----></div>
+<a name="massbalcurrsol">
+</a><br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<mfrac><mrow><mi fontstyle="normal">d</mi>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+</mrow>
+<mrow><mi fontstyle="normal">d</mi><mi>t</mi></mrow>
+</mfrac>
+<mo>=</mo>
+<msup><mrow><mi>&pi;</mi></mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+<mo>-</mo>
+<mtext>div</mtext>
+<mrow><mo>[</mo>
+<mover><mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">m</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+</mrow>
+<mo stretchy="true">&tilde;</mo></mover>
+<mo>+</mo>
+<mfrac><mrow>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+</mrow>
+<mrow>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi>f</mi></mrow>
+</msup>
+</mrow>
+</mfrac>
+
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">m</mi>
+<mtext></mtext>
+</mrow><mrow><mi>f</mi></mrow>
+</msup>
+<mo>]</mo></mrow><mo>-</mo>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+
+<mtext>div</mtext>
+<mo stretchy="false">[</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">v</mi>
+<mtext></mtext>
+<mo stretchy="false">]</mo><mo>,</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>16</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ an advection-diffusion equation. In the hyperbolic
+limit-where advection dominates-spatial oscillations emerge in
+numerical solutions of this equation
+[<a href="#Brooks:82" name="CITEBrooks:82">Brooks and Hughes, 1982</a>,<a href="#Paper6" name="CITEPaper6">Hughes et&nbsp;al., 1987</a>]. However, the form in which the equation is
+obtained is not amenable for the application of standard stabilisation
+techniques [<a href="#Paper6" name="CITEPaper6">Hughes et&nbsp;al., 1987</a>]. In part, this is because although the
+(near) incompressibility of the fluid phase is imbibed in the balance
+of linear momentum, it has not yet been explicitly incorporated into
+the transport equations. This subsection proceeds to impose the fluid
+incompressibility condition and deduces implications for the solute
+mass transport equation, including a crucial simplification allowing
+for its straightforward numerical stabilisation.
+
+<div class="p"><!----></div>
+From Equation (<a href="#massbalcurr">3</a>), the local form of the
+balance of mass for the fluid species (recalling that
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo>=</mo><mn>0</mn></mrow></math>) in the current configuration is
+
+<div class="p"><!----></div>
+<a name="fluidtransporteqn">
+</a><br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<mfrac><mrow><mi fontstyle="normal">d</mi>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi>f</mi></mrow>
+</msup>
+</mrow>
+<mrow><mi fontstyle="normal">d</mi><mi>t</mi></mrow>
+</mfrac>
+<mo>=</mo><mo>-</mo>
+<mtext>div</mtext>
+<mrow><mo>[</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">m</mi>
+<mtext></mtext>
+</mrow><mrow><mi>f</mi></mrow>
+</msup>
+<mo>]</mo></mrow><mo>-</mo>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi>f</mi></mrow>
+</msup>
+
+<mtext>div</mtext>
+<mrow><mo>[</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">v</mi>
+<mtext></mtext>
+<mo>]</mo></mrow><mo>.</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>17</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ In order to impose the incompressibility of the fluid, we
+first denote by 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow>
+<msub><mrow><mn>0</mn></mrow><mrow><mi fontstyle="normal">ini</mi></mrow>
+</msub>
+ </mrow>
+<mrow><mi>f</mi></mrow></msubsup>
+</mrow></math> the <i>initial</i> value
+of the fluid reference concentration, and recognise that
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+ which results in a very large pressure gradient driven
+flux due to near incompressibility. In (<a href="#incompderiv">20</a>), 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>J</mi></mrow></math>
+denotes 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext>det</mtext>
+<mo stretchy="false">(</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+<mo stretchy="false">)</mo></mrow></math>, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>J</mi></mrow><mrow>
+<msub><mrow><mi>f</mi></mrow><mrow><mi fontstyle="normal">g</mi></mrow>
+</msub>
+</mrow>
+</msup>
+</mrow></math> denotes
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi fontstyle="normal">det</mi><mo stretchy="false">(</mo>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msup><mrow><mi fontstyle="normal">g</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow>
+</msup>
+<mo stretchy="false">)</mo></mrow></math> and
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">ini</mi> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+</mrow></math> is the push-forward of
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow>
+<msub><mrow><mn>0</mn></mrow><mrow><mi fontstyle="normal">ini</mi></mrow>
+</msub>
+ </mrow>
+<mrow><mi>f</mi></mrow></msubsup>
+</mrow></math> to the current configuration.
+
+<div class="p"><!----></div>
+Restricting the argument to a
+non-growing solid, i.e. 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow></math> in the solid and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow><mrow>
+<msub><mrow><mi>f</mi></mrow><mrow><mi fontstyle="normal">e</mi></mrow>
+</msub>
+</mrow>
+</msup>
+</mrow></math>
+are uniform,
+
+<div class="p"><!----></div>
+<br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<mfrac><mrow><mo>&part;</mo></mrow>
+<mrow><mo>&part;</mo><mi>t</mi></mrow>
+</mfrac>
+<mrow><mo>(</mo>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow>
+<msub><mrow><mn>0</mn></mrow><mrow><mi fontstyle="normal">ini</mi></mrow>
+</msub>
+ </mrow>
+<mrow><mi>f</mi></mrow></msubsup>
+<mo stretchy="false">(</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">X</mi>
+<mtext></mtext>
+<mo stretchy="false">)</mo><mo>)</mo></mrow><mo>&equiv;</mo><mn>0</mn><mo>&rArr;</mo>
+<mfrac><mrow><mo>&part;</mo></mrow>
+<mrow><mo>&part;</mo><mi>t</mi></mrow>
+</mfrac>
+<mrow><mo>(</mo>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi>f</mi></mrow>
+</msup>
+<mo stretchy="false">(</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">x</mi>
+<mtext></mtext>
+<mo>&SmallCircle;</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">&phiv;</mi>
+<mtext></mtext>
+<mo>,</mo><mi>t</mi><mo stretchy="false">)</mo><mo>)</mo></mrow><mo>=</mo><mn>0</mn><mo>,</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>18</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ which is the hidden implication of our assumption of a
+homogeneous deformation, i.e., 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+</mrow></math> is the deformation gradient of
+all phases.  This leads to 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mfrac><mrow><mo>&part;</mo>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi>f</mi></mrow>
+</msup>
+</mrow>
+<mrow><mo>&part;</mo><mi>t</mi></mrow>
+</mfrac>
+<mo>=</mo><mn>0</mn></mrow></math>. We
+therefore proceed to treat our fluid mass transport at steady
+state. Rewriting the flux 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">m</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow></math> from Equation
+(<a href="#fluidtransporteqn">19</a>) as the product 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">v</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow></math> and using the result derived above,
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+Thus, using the incompressibility condition (<a href="#incomprimpl">22</a>), we
+get the simplified form of the balance of mass for an arbitrary solute
+species, s,
+
+<div class="p"><!----></div>
+<a name="stdform">
+</a><br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<mfrac><mrow><mi fontstyle="normal">d</mi>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+</mrow>
+<mrow><mi fontstyle="normal">d</mi><mi>t</mi></mrow>
+</mfrac>
+<mo>=</mo>
+<msup><mrow><mi>&pi;</mi></mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+<mo>-</mo>
+<mtext>div</mtext>
+<mrow><mo>[</mo>
+<mover><mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">m</mi>
+<mtext></mtext>
+</mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+</mrow>
+<mo stretchy="true">&tilde;</mo></mover>
+<mo>]</mo></mrow><mo>-</mo>
+<mfrac><mrow>
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">m</mi>
+<mtext></mtext>
+</mrow><mrow><mi>f</mi></mrow>
+</msup>
+<mo>&middot;</mo>
+<mtext>grad</mtext>
+<mrow><mo>[</mo>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+<mo>]</mo></mrow></mrow>
+<mrow>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi>f</mi></mrow>
+</msup>
+</mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac><mrow>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+
+<msup><mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">m</mi>
+<mtext></mtext>
+</mrow><mrow><mi>f</mi></mrow>
+</msup>
+<mo>&middot;</mo>
+<mtext>grad</mtext>
+<mrow><mo>[</mo>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi>f</mi></mrow>
+</msup>
+<mo>]</mo></mrow></mrow>
+<mrow>
+<msup><mrow><mi>&rho;</mi></mrow><mrow>
+<msup><mrow><mi>f</mi></mrow><mrow><mn>2</mn></mrow>
+</msup>
+</mrow>
+</msup>
+</mrow>
+</mfrac>
+<mo>.</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>19</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ Using the pushed-forward form of (<a href="#soluteflux">17</a>), this is
+now in standard advection-diffusion form, and is well suited for
+stabilisation schemes such as the streamline upwind Petrov-Galerkin
+(SUPG) method (see, for e.g., <a href="#Paper6" name="CITEPaper6">Hughes et&nbsp;al., [1987</a>]) described briefly below.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc3.3.5">
+3.3.5</a>&nbsp;&nbsp;Stabilisation of the simplified solute transport
+equation</h4><a name="solutetranspstab">
+</a>
+
+<div class="p"><!----></div>
+SUPG methods are a class of finite element methods, originally
+developed for the scalar advection-diffusion equation, which have
+proven efficient in the solution of a variety of flow problems
+[<a href="#recentsupg" name="CITErecentsupg">Hughes, 1987</a>]. The standard form of the scalar
+advection-diffusion is
+
+<div class="p"><!----></div>
+<a name="scalaradvdiff">
+</a><br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<mfrac><mrow><mo>&part;</mo><mi>&phiv;</mi></mrow>
+<mrow><mo>&part;</mo><mi>t</mi></mrow>
+</mfrac>
+<mo>+</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">a</mi>
+<mtext></mtext>
+<mo>&middot;</mo><mi fontstyle="normal">grad</mi><mrow><mo>[</mo><mi>&phiv;</mi><mo>]</mo></mrow><mo>=</mo><mi fontstyle="normal">div</mi><mrow><mo>[</mo><mi>&kappa;</mi><mi>&ensp;</mi><mi fontstyle="normal">grad</mi><mrow><mo>[</mo><mi>&phiv;</mi><mo>]</mo></mrow><mo>]</mo></mrow><mo>+</mo><mi>f</mi><mo>,</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>20</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&phiv;</mi><mo>=</mo><mi>&phiv;</mi><mo stretchy="false">(</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">x</mi>
+<mtext></mtext>
+<mo>,</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></math> is a scalar field, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">a</mi>
+<mtext></mtext>
+</mrow></math> is
+the advective velocity, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&kappa;</mi></mrow></math> is a diffusivity and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>f</mi></mrow></math> is a
+volumetric source term. Here, if 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&kappa;</mi><mo>&gt;</mo><mn>0</mn></mrow></math>, we have the parabolic
+case and if 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&kappa;</mi><mo>=</mo><mn>0</mn></mrow></math>, we have the hyperbolic case. In terms of
+numerics, the greatest challenge is posed when the element <em>
+  Peclet number</em>,
+
+<div class="p"><!----></div>
+<a name="pecletcond">
+</a><br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mi>&alpha;</mi><mo>=</mo><mi fontstyle="normal">max</mi>
+<mfrac><mrow><mo stretchy="false">&verbar;</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">a</mi>
+<mtext></mtext>
+<mo stretchy="false">&verbar;</mo><mi>h</mi></mrow>
+<mrow><mn>2</mn><mi>&kappa;</mi></mrow>
+</mfrac>
+<mo>,</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>21</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ is large; 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>h</mi></mrow></math> being the mesh size. Spatial instabilities are
+observed in the numerical solution of (<a href="#scalaradvdiff">25</a>) when the
+element Peclet number is large [<a href="#recentsupg" name="CITErecentsupg">Hughes, 1987</a>].
+
+<div class="p"><!----></div>
+In contrast to the standard Galerkin method, the SUPG offers greater
+control over the advective-derivative term by adding an upwinded,
+weighted residual contribution which acts only along the direction of
+the streamline. This stabilising control therefore maintains
+consistency [<a href="#recentsupg" name="CITErecentsupg">Hughes, 1987</a>]. In weak form, the method for pde
+(<a href="#scalaradvdiff">25</a>) is defined as
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+ where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub><mrow><mi>&Gamma;</mi></mrow><mrow><mi fontstyle="normal">h</mi></mrow>
+</msub>
+</mrow></math> is the Neumann boundary, and
+this equation introduces a numerical stabilisation parameter 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>&tau;</mi></mrow></math>,
+which we have calculated from the 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub><mrow><mi fontstyle="normal">L</mi></mrow><mrow><mn>2</mn></mrow>
+</msub>
+</mrow></math> norms of element
+level matrices, as described in
+<a href="#tezduyarsupg" name="CITEtezduyarsupg">Tezduyar and Sathe, [2003</a>].
+
+<div class="p"><!----></div>
+<font color="#B70000">Figures
+  <a href="#unstable">7</a> and <a href="#stable">8</a> present the solute concentration
+  contours at time 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>t</mi><mo>=</mo><mn>10</mn></mrow></math> s for the initial-boundary-value problem
+  discussed in Subsection <a href="#enzyme_kinetics_eg">4.3</a> using the standard 
+  Galerkin and an SUPG based scheme respectively.</font>  
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg7">
+</a> 
+<center><a href="unstable.eps">Figure</a>
+
+<center>Figure 7: <a name="unstable">
+</a> Spatial oscillations
+  observed in the solute concentration contours (at time 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>t</mi><mo>=</mo><mn>10</mn></mrow></math> s)
+  obtained while solving Example <a href="#enzyme_kinetics_eg">4.3</a> using
+  the standard Galerkin scheme.</center>
+</center>
+
+<center>
+<a href="stable.eps">Figure</a>
+
+<center>Figure 8: <a name="stable">
+</a> Smooth, stabilised solutions
+  observed for the solute concentration (at time 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>t</mi><mo>=</mo><mn>10</mn></mrow></math> s)
+  obtained while solving Example <a href="#enzyme_kinetics_eg">4.3</a> using
+  an SUPG scheme.</center>
+</center>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.4">
+3.4</a>&nbsp;&nbsp;Nature of the sources</h3>
+<a name="sources">
+</a>
+
+<div class="p"><!----></div>
+There exists a large body of literature,
+<a href="#CowinHegedus:76" name="CITECowinHegedus:76">Cowin and Hegedus [1976]</a>,<a href="#EpsteinMaugin:2000" name="CITEEpsteinMaugin:2000">Epstein and Maugin [2000]</a>,<a href="#AmbrosiMollica:2002" name="CITEAmbrosiMollica:2002">Ambrosi and Mollica [2002]</a>, that
+addresses growth in biological tissue mainly based upon a single
+species undergoing transport and production/annihilation. However,
+when chemistry is accounted for, it is apparent that growth depends on
+cascades of complex biochemical reactions involving several species,
+and additionally involves intimate coupling between mass transfer,
+biochemistry and mechanics. An example of this chemo-mechanical
+coupling is described in <a href="#Provenzanoetal:2003" name="CITEProvenzanoetal:2003">Provenzano et&nbsp;al., [2003</a>].
+
+<div class="p"><!----></div>
+The modelling approach followed in this work is to select appropriate
+functional forms of the source terms for collagen, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+</mrow></math>,
+and the solutes, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+</mrow></math>, that abstract the
+complexity of the biochemistry. In our earlier
+exposition [<a href="#growthpaper" name="CITEgrowthpaper">Garikipati et&nbsp;al., 2004</a>], we utilised simple first order
+chemical kinetics to define 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+</mrow></math>. We now replace it with
+a source that has greater relevance from the standpoint of
+biochemistry. 
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc3.4.1">
+3.4.1</a>&nbsp;&nbsp;Enzyme kinetics</h4>
+<a name="enzyme_kinetics">
+</a>
+
+<div class="p"><!----></div>
+Michaelis-Menten enzyme kinetics (see, for e.g.,
+<a href="#Sengersetal:2004" name="CITESengersetal:2004">Sengers et&nbsp;al., [2004</a>]) involves a two-step reaction with the
+collagen and solute production terms given by
+
+<div class="p"><!----></div>
+<a name="enzymekineticseq">
+</a><br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+<mo>=</mo>
+<mfrac><mrow><mo stretchy="false">(</mo>
+<msub><mrow><mi>k</mi></mrow><mrow><mi fontstyle="normal">max</mi></mrow>
+</msub>
+
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+<mo stretchy="false">)</mo></mrow>
+<mrow><mo stretchy="false">(</mo>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mi>m</mi> </mrow>
+<mrow><mi fontstyle="normal">s</mi></mrow></msubsup>
+<mo>+</mo>
+<msup><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+<mo stretchy="false">)</mo></mrow>
+</mfrac>
+
+<msub><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">cell</mi></mrow>
+</msub>
+<mo>,</mo><mi>&emsp;&emsp;&emsp;</mi>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+<mo>=</mo><mo>-</mo>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi fontstyle="normal">s</mi></mrow>
+</msup>
+<mo>,</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>22</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub><mrow><mi>&rho;</mi></mrow><mrow><mi fontstyle="normal">cell</mi></mrow>
+</msub>
+</mrow></math> is the concentration of
+fibroblasts, 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub><mrow><mi>k</mi></mrow><mrow><mi fontstyle="normal">max</mi></mrow>
+</msub>
+</mrow></math> is the maximum value of the solute
+production reaction rate constant, and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mi>m</mi> </mrow>
+<mrow><mi fontstyle="normal">s</mi></mrow></msubsup>
+</mrow></math> is half
+the solute concentration corresponding to 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub><mrow><mi>k</mi></mrow><mrow><mi fontstyle="normal">max</mi></mrow>
+</msub>
+</mrow></math>. Denoting
+the two-stage reaction, involving an enzyme (E), substrate (S) and a
+product (P), by
+
+<div class="p"><!----></div>
+ it can be shown that
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mi>m</mi> </mrow>
+<mrow><mi fontstyle="normal">s</mi></mrow></msubsup>
+<mo>=</mo>
+<mfrac><mrow><mo stretchy="false">(</mo>
+<msub><mrow><mi>k</mi></mrow><mrow><mn>2</mn></mrow>
+</msub>
+<mo>+</mo>
+<msub><mrow><mi>k</mi></mrow><mrow><mo>-</mo><mn>1</mn></mrow>
+</msub>
+<mo stretchy="false">)</mo></mrow>
+<mrow>
+<msub><mrow><mi>k</mi></mrow><mrow><mn>1</mn></mrow>
+</msub>
+</mrow>
+</mfrac>
+</mrow></math>. See
+<a href="#sbromadill" name="CITEsbromadill">Bromberg and Dill [2002]</a> for details on chemistry modelled by the
+Michaelis-Menten model.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc3.4.2">
+3.4.2</a>&nbsp;&nbsp;Strain energy dependent collagen production</h4>
+<a name="stress_based">
+</a>
+
+<div class="p"><!----></div>
+A strain energy dependent source term was originally proposed in the
+context of bone growth [<a href="#HarriganHamilton:93" name="CITEHarriganHamilton:93">Harrigan and Hamilton, 1993</a>] and induces growth
+at a point when the energy density deviates from a basal value,
+suitably weighted by a relative density ratio. Written for collagen,
+it has the form
+
+<div class="p"><!----></div>
+<a name="strainsrc">
+</a><br />
+<table width="100%"><tr><td align="center">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+<mo>=</mo><mo stretchy="false">(</mo>
+<mfrac><mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi fontstyle="normal">c</mi></mrow></msubsup>
+</mrow>
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow>
+<msub><mrow><mn>0</mn></mrow><mrow><mi fontstyle="normal">ini</mi></mrow>
+</msub>
+ </mrow>
+<mrow><mi fontstyle="normal">c</mi></mrow></msubsup>
+</mrow>
+</mfrac>
+
+<msup><mrow><mo stretchy="false">)</mo></mrow><mrow><mo>-</mo><mi>m</mi></mrow>
+</msup>
+
+<msub><mrow><mi>&psi;</mi></mrow><mrow><mi fontstyle="normal">F</mi></mrow>
+</msub>
+<mo>-</mo>
+<msubsup><mrow><mi>&psi;</mi></mrow><mrow><mi fontstyle="normal">F</mi> </mrow>
+<mrow><mo>*</mo></mrow></msubsup>
+<mo>,</mo></mrow>
+    </mstyle></math></td><td width="1">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mo stretchy="false">(</mo><mn>23</mn><mo stretchy="false">)</mo></mrow>
+    </mstyle></math>
+</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+ where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub><mrow><mi>&psi;</mi></mrow><mrow><mi fontstyle="normal">F</mi></mrow>
+</msub>
+</mrow></math> is the mass-specific strain energy
+function, and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&psi;</mi></mrow><mrow><mi fontstyle="normal">F</mi> </mrow>
+<mrow><mo>*</mo></mrow></msubsup>
+</mrow></math> is a reference value of this
+strain energy density. Equation (<a href="#strainsrc">30</a>) models collagen
+production when the strain energy density (weighted by a relative
+density ratio) at a point exceeds this reference value, and models
+annihilation otherwise.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc4">
+4</a>&nbsp;&nbsp;Numerical examples</h2>
+<a name="numericalimplementation">
+</a>
+
+<div class="p"><!----></div>
+The theory presented in the preceding sections results in a system of
+non-linear coupled partial differential equations. A finite element
+formulation employing a staggered scheme based upon operator splits
+<a href="#Armero-poroplasticity:99" name="CITEArmero-poroplasticity:99">Armero, [1999</a>,<a href="#Garikipatiox2:01" name="CITEGarikipatiox2:01">Garikipati and Rao, [2001</a>] has been implemented
+in <tt>FEAP</tt> [<a href="#feapmanual" name="CITEfeapmanual">Taylor, 1999</a>] to solve the coupled problem. In the
+biphasic-fluid and collagen-problem for instance, the basic
+solution scheme involves keeping the displacement field fixed while
+solving for the concentration field using the mass transport
+equation. The resulting concentration field is then fixed to solve the
+mechanics problem. This procedure is repeated until the resulting
+fields satisfy the differential equations within some suitable
+magnitude of an error norm.
+
+<div class="p"><!----></div>
+The mechanics problem is solved quasi-statically. Backward Euler is
+used as the time-stepping algorithm for mass transport. Non-linear
+projection methods [<a href="#simotaylorpister:85" name="CITEsimotaylorpister:85">Simo et&nbsp;al., 1985</a>] are used to treat the
+near-incompressibility imposed by water. Mixed methods, as described
+in <a href="#Garikipatiox2:01" name="CITEGarikipatiox2:01">Garikipati and Rao, [2001</a>], are used for stress (and strain) gradient
+driven fluxes.
+
+<div class="p"><!----></div>
+The following examples aim to demonstrate the mathematical
+formulation and aspects of the coupled phenomena as the tissue
+grows. The model geometry, based on our engineered tendon
+constructs (see Figure <a href="#engconst">9</a>), is a cylinder 12 mm in
+length and 1 mm
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>2</mn></mrow>
+</msup>
+</mrow></math> in cross-sectional area. The finite element mesh
+used for the calculations is depicted in Figure <a href="#egmesh">10</a>.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.1">
+4.1</a>&nbsp;&nbsp;The constriction induced growth problem</h3>
+<a name="pinching">
+</a>
+
+<div class="p"><!----></div>
+Only two
+phases-fluid and collagen-are included for the mass transport
+and mechanics. The collagen is represented by the anisotropic
+worm-like chain model outlined previously (see Section <a href="#wlcm">3.1</a>)
+and the fluid phase is modelled as ideal and nearly
+incompressible. The parameters used in the analysis are as
+presented in Table 2.1. The values chosen are representative of
+the kinds of biological systems we are working with. The classes
+of initial and boundary conditions imposed are also based on
+physical experiments.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+Since we only have two species and we want to demonstrate growth, an
+"artificial" fluid sink 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow></math> is introduced following
+simple first order kinetics. The collagen source will be the negative
+of the fluid sink:   
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo>=</mo><mo>-</mo>
+<msup><mrow><mi>k</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+<mo stretchy="false">(</mo>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+<mo>-</mo>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow>
+<msub><mrow><mn>0</mn></mrow><mrow><mi fontstyle="normal">ini</mi></mrow>
+</msub>
+ </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+<mo stretchy="false">)</mo><mo>;</mo><mi>&emsp;&emsp;&emsp;</mi>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+<mo>=</mo><mo>-</mo>
+<msup><mrow><mi>&Pi;</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow></math>, where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>k</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow></math> is the reaction rate,
+and 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow>
+<msub><mrow><mn>0</mn></mrow><mrow><mi fontstyle="normal">ini</mi></mrow>
+</msub>
+ </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+</mrow></math> is the initial
+concentration of fluid. When 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+<mo>&gt;</mo>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow>
+<msub><mrow><mn>0</mn></mrow><mrow><mi fontstyle="normal">ini</mi></mrow>
+</msub>
+ </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+</mrow></math>, this acts as a source for
+collagen. The mixing entropy of fluid in the mixture with collagen is
+written as 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>&eta;</mi></mrow><mrow><mi fontstyle="normal">mix</mi> </mrow>
+<mrow><mi>f</mi></mrow></msubsup>
+<mo>=</mo><mo>-</mo>
+<mfrac><mrow><mi>k</mi></mrow>
+<mrow>
+<msup><mrow><mi fontstyle="italic">M</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow>
+</mfrac>
+<mi fontstyle="normal">log</mi><mo stretchy="false">(</mo>
+<mfrac><mrow>
+<msubsup><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mi fontstyle="normal">f</mi></mrow></msubsup>
+</mrow>
+<mrow>
+<msub><mrow><mi>&rho;</mi></mrow><mrow><mn>0</mn></mrow>
+</msub>
+</mrow>
+</mfrac>
+<mo stretchy="false">)</mo></mrow></math>,
+where 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi fontstyle="italic">M</mi></mrow><mrow><mi fontstyle="normal">f</mi></mrow>
+</msup>
+</mrow></math> is the molecular weight of the
+fluid.
+
+<div class="p"><!----></div>
+The boundary conditions simply corresponding to
+immersing the tendon in a nutrient rich bath. The initial collagen
+concentration is 500 kg/m
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>3</mn></mrow>
+</msup>
+</mrow></math> everywhere and the fluid concentration
+is 400 kg/m
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>3</mn></mrow>
+</msup>
+</mrow></math> everywhere. This is exposed to a bath where the fluid
+concentration is  500 kg/m
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>3</mn></mrow>
+</msup>
+</mrow></math>, so with these concentration boundary
+conditions set, nutrient rich fluid rushes into the tissue, and growth
+occurs to form more collagen. The following plots present a few
+results from the analysis.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.2">
+4.2</a>&nbsp;&nbsp;A swelling problem</h3>
+<a name="swelling">
+</a>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg9">
+</a> <center>  <a href="one-construct.eps">Figure</a>
+
+<center>Figure 9: Engineered tendon constructs <a href="#Calve:04" name="CITECalve:04">Calve et&nbsp;al., [2004</a>].</center>
+<a name="engconst">
+</a>
+</center>
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg10">
+</a>   <center>  <a href="mesh.eps">Figure</a>
+  
+<center>Figure 10: The finite element mesh used.</center>
+  <a name="egmesh">
+</a>
+</center>
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg11">
+</a>   <center>     <a href="after_growth.eps">Figure</a>
+     
+<center>Figure 11: The collagen concentration (kg/m
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>3</mn></mrow>
+</msup>
+</mrow></math>) after 1800 seconds.</center>
+     <a name="after_growth">
+</a>
+</center>
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg12">
+</a>   <center>     <a href="stress-extension.eps">Figure</a>
+     
+<center>Figure 12: The stress (Pa) vs extension (m) curves before and
+     after growth.</center>
+     <a name="stress_extension">
+</a>
+</center>
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg13">
+</a>   <center>     <a href="volume-evolution.eps">Figure</a>
+     
+<center>Figure 13: The volume of the tendon (m
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>3</mn></mrow>
+</msup>
+</mrow></math>) evolving with
+     time.</center>
+     <a name="volume_evolution">
+</a>
+</center>
+<div class="p"><!----></div>
+Figure  shows the initial collagen
+concentration in the tendon. After it has been immersed in a nutrient
+rich bath for half an hour, the tendon has grown and the collagen
+concentration is now higher as seen in Figure
+  <a href="#after_growth">11</a>. On performing a simple uniaxial tension test on
+the tendon before and after growth, it is observed that the grown
+tissue is stiffer and stronger as seen in Figure
+  <a href="#stress_extension">12</a>.  Additionally, the swelling of the tendon as
+it is immersed in the bath takes place in two clear regimes as seen in
+Figure <a href="#volume_evolution">13</a>. There as an initial rapid swelling in
+  a diffusion dominated regime, and a slower growth dominated swelling
+  later on.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.3">
+4.3</a>&nbsp;&nbsp;An enzyme-kinetics based multiphasic problem</h3>
+<a name="enzyme_kinetics_eg">
+</a>
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc5">
+5</a>&nbsp;&nbsp;Conclusion</h2>
+<a name="sec:5">
+</a>
+
+<div class="p"><!----></div>
+In this paper, we have discussed a number of enhancements to our
+original growth formulation presented in <a href="#growthpaper" name="CITEgrowthpaper">Garikipati et&nbsp;al. [2004]</a>. That
+formulation has served as a platform for posing a very wide range of
+questions on the biophysics of growth. Some issues, such as
+saturation, incompressibility of the fluid species and its influence
+upon the tissue response, and the roles of biochemical and strain
+energy-dependent source terms are specific to soft biological
+tissues. We note, however, that other issues are also applicable to a
+number of systems with a porous solid, transported fluid and reacting
+solutes. Included in these are issues of current versus reference
+configurations for mass transport, swelling, Fickean diffusion, fluid
+response in compression and tension, cavitation, and roles of
+permeabilities and mobilities.
+
+<div class="p"><!----></div>
+These issues have been resolved using arguments posed easily in the
+framework derived in <a href="#growthpaper" name="CITEgrowthpaper">Garikipati et&nbsp;al. [2004]</a>. The interactions engendered
+in the coupled reaction-transport-mechanics system are complex,
+as borne out by the numerical examples in Section
+<a href="#numericalimplementation">4</a>. We are currently examining combinations
+of sources defined in Section <a href="#sources">3.4</a>, and aim to calibrate our
+choices from tendon growth experiments. The treatment of these issues
+has led to a formulation more suited to the biophysics of growing soft
+tissue, making progress toward our broader goal of applying it to
+applications such as the study of wound healing, pathological
+hypertrophy and atrophy, as well as drug efficacy and interaction.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+
+<h2>References</h2>
+
+<dl compact="compact">
+ <dt><a href="#CITEAmbrosiMollica:2002" name="AmbrosiMollica:2002">[Ambrosi and Mollica 2002]</a></dt><dd>
+Ambrosi D, Mollica F (2002) On the mechanics of a growing tumor. Int J Engr
+  Sci 40:1297-1316
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEArmero-poroplasticity:99" name="Armero-poroplasticity:99">[Armero 1999]</a></dt><dd>
+Armero F (1999) Formulation and finite element implementation of a
+  multiplicative model of coupled poro-pplasticity at finite strains under
+  fully-saturated conditions. Comp Methods in Applied Mech Engrg
+  171:205-241
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEBischoffetal:2002" name="Bischoffetal:2002">[Bischoff et&nbsp;al. 2002a]</a></dt><dd>
+Bischoff JE, Arruda EM, Grosh K (2002a) A microstructurally based
+  orthotropic hyperelastic constitutive law. J Applied Mechanics
+  69:570-579
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEBischoffetal1:2002" name="Bischoffetal1:2002">[Bischoff et&nbsp;al. 2002b]</a></dt><dd>
+Bischoff JE, Arruda EM, Grosh K (2002b) Orthotropic elasticity in
+  terms of an arbitrary molecular chain model. J Applied Mechanics
+  69:198-201
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEcavitationchris" name="cavitationchris">[Brennen 1995]</a></dt><dd>
+Brennen CE (1995) Cavitation and Bubble Dynamics. Oxford University Press
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEsbromadill" name="sbromadill">[Bromberg and Dill 2002]</a></dt><dd>
+Bromberg S, Dill KA (2002) Molecular Driving Forces: Statistical
+  Thermodynamics in Chemistry and Biology. Garland
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEBrooks:82" name="Brooks:82">[Brooks and Hughes 1982]</a></dt><dd>
+Brooks A, Hughes T (1982) Streamline upwind/Petrov-Galerkin formulations
+  for convection dominated flows with particular emphasis on the incompressible
+  Navier-Stokes equations. Comp Methods in Applied Mech Engrg
+  32:199-259
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEBustamanteetal:2003" name="Bustamanteetal:2003">[Bustamante et&nbsp;al. 2003]</a></dt><dd>
+Bustamante C, Bryant Z, Smith SB (2003) Ten years of tension: Single-molecule
+  DNA mechanics. Nature 421:423-427
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITECalve:04" name="Calve:04">[Calve et&nbsp;al. 2004]</a></dt><dd>
+Calve S, Dennis R, Kosnik P, Baar K, Grosh K, Arruda E (2004) Engineering of
+  functional tendon. Tissue Engineering 10:755-761
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITECowinHegedus:76" name="CowinHegedus:76">[Cowin and Hegedus 1976]</a></dt><dd>
+Cowin SC, Hegedus DH (1976) Bone remodeling I: A theory of adaptive
+  elasticity. Journal of Elasticity 6:313-325
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEEpsteinMaugin:2000" name="EpsteinMaugin:2000">[Epstein and Maugin 2000]</a></dt><dd>
+Epstein M, Maugin GA (2000) Thermomechanics of volumetric growth in uniform
+  bodies. International Journal of Plasticity 16:951-978
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEFung:1993" name="Fung:1993">[Fung 1993]</a></dt><dd>
+Fung YC (1993) Biomechanics: Mechanical properties of living tissues, 2nd
+  edn. Springer-Verlag, New York
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEGarikipatiox2:01" name="Garikipatiox2:01">[Garikipati and Rao 2001]</a></dt><dd>
+Garikipati K, Rao VS (2001) Recent advances in models for thermal oxidation of
+  silicon. Journal of Computational Physics 174:138-170
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEgrowthpaper" name="growthpaper">[Garikipati et&nbsp;al. 2004]</a></dt><dd>
+Garikipati K, Arruda EM, Grosh K, Narayanan H, Calve S (2004) A continuum
+  treatment of growth in biological tissue: Mass transport coupled with
+  mechanics. Journal of Mechanics and Physics of Solids 52:1595-1625
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEGrahametal:2004" name="Grahametal:2004">[Graham et&nbsp;al. 2004]</a></dt><dd>
+Graham JS, Vomund AN, Phillips CL, Grandbois M (2004) Structural changes in
+  human type I collagen fibrils investigated by force spectroscopy.
+  Experimental Cell Research 299:335-342
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEHanetal:2000" name="Hanetal:2000">[Han et&nbsp;al. 2000]</a></dt><dd>
+Han S, Gemmell SJ, Helmer KG, Grigg P, Wellen JW, Hoffman AH, Sotak CH (2000)
+  Changes in ADC caused by tensile loading of rabbit achilles tendon: Evidence
+  for water transport. Journal of Magnetic Resonance 144:217-227
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEHarriganHamilton:93" name="HarriganHamilton:93">[Harrigan and Hamilton 1993]</a></dt><dd>
+Harrigan TP, Hamilton JJ (1993) Finite element simulation of adaptive bone
+  remodelling: A stability criterion and a time stepping method. Int J
+  Numer Methods Engrg 36:837-854
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEPaper6" name="Paper6">[Hughes et&nbsp;al. 1987]</a></dt><dd>
+Hughes T, Franca L, Mallet M (1987) A new finite element formulation for
+  computational fluid dynamics: VII. Convergence analysis of the
+  generalized SUPG formulation for linear time-dependent multidimensional
+  advective-diffusive systems. Comp Methods in Applied Mech Engrg
+  63(1):97-112
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITErecentsupg" name="recentsupg">[Hughes 1987]</a></dt><dd>
+Hughes TJR (1987) Recent progress in the development and understanding of
+  SUPG methods with special reference to the compressible Euler and
+  Navier-Stokes equations. International Journal for Numerical Methods in
+  Fluids 7:1261-1275
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEKratkyPorod:49" name="KratkyPorod:49">[Kratky and Porod 1949]</a></dt><dd>
+Kratky O, Porod G (1949) R&#246;ntgenuntersuchungen gel&#246;ster
+  Fadenmolek&#252;le. Recueil Trav Chim 68:1106-1122
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEKuhlSteinmann:02" name="KuhlSteinmann:02">[Kuhl and Steinmann 2003]</a></dt><dd>
+Kuhl E, Steinmann P (2003) Theory and numerics of geometrically-nonlinear open
+  system mechanics. Int J Numer Methods Engrg 58:1593-1615
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEkuhlremod05" name="kuhlremod05">[Kuhl et&nbsp;al. 2005]</a></dt><dd>
+Kuhl E, Garikipati K, Arruda E, Grosh K (2005) Remodeling of biological tissue:
+  Mechanically induced reorientation of a transversely isotropic chain network.
+  Journal of the Mechanics and Physics of Solids 53(7):1552 - 73
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITELandLif" name="LandLif">[Landau and Lifshitz 1951]</a></dt><dd>
+Landau LD, Lifshitz EM (1951) A Course on Theoretical Physics, Volume 5,
+  Statistical Physics, Part I. Butterworth Heinemann (reprint)
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITELee:69" name="Lee:69">[Lee 1969]</a></dt><dd>
+Lee EH (1969) Elastic-Plastic Deformation at Finite Strains. J
+  Applied Mechanics 36:1-6
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEMarkoSiggia:95" name="MarkoSiggia:95">[Marko and Siggia 1995]</a></dt><dd>
+Marko JF, Siggia ED (1995) Stretching DNA. Macromolecules 28:8759-8770
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITENordinetal:2001" name="Nordinetal:2001">[Nordin et&nbsp;al. 2001]</a></dt><dd>
+Nordin M, Lorenz T, Campello M (2001) Biomechanics of tendons and ligaments.
+  In: Nordin M, Frankel VH (eds) Basic Biomechanics of the Musculoskeletal
+  System, Lippincott Williams and Wilkins, N.Y., pp 102-125
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEProvenzanoetal:2003" name="Provenzanoetal:2003">[Provenzano et&nbsp;al. 2003]</a></dt><dd>
+Provenzano PP, Martinez DA, Grindeland RE, Dwyver KW, Turner J, Vailas AC,
+  Vanderby R (2003) Hindlimb unloading alters ligament healing. Journal of
+  Applied Physiology 94:314-324
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITERiefetal:97" name="Riefetal:97">[Rief et&nbsp;al. 1997]</a></dt><dd>
+Rief M, Oesterhelt F, Heymann B, Gaub HE (1997) Single Molecule Force
+  Spectroscopy o Polysaccharides by Atomic Force Microscopy. Science
+  275:1295-1297
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITESengersetal:2004" name="Sengersetal:2004">[Sengers et&nbsp;al. 2004]</a></dt><dd>
+Sengers BG, Oomens CWJ, Baaijens FPT (2004) An integrated finite-element
+  approach to mechanics, transport and biosynthesis in tissue engineering. J
+  Bio Mech Engrg 126:82-91
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEsimotaylorpister:85" name="simotaylorpister:85">[Simo et&nbsp;al. 1985]</a></dt><dd>
+Simo JC, Taylor RL, Pister KS (1985) Variational and projection methods for the
+  volume constraint in finite deformation elasto-plasticity. Comp Methods in
+  Applied Mech Engrg 51:177-208
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITESunetal:2002" name="Sunetal:2002">[Sun et&nbsp;al. 2002]</a></dt><dd>
+Sun YL, Luo ZP, Fertala A, An KN (2002) Direct quantification of the
+  flexibility of type I collagen monomer. Biochemical and Biophysical Research
+  Communications 295:382-386
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITESwartzetal:99" name="Swartzetal:99">[Swartz et&nbsp;al. 1999]</a></dt><dd>
+Swartz M, Kaipainen A, Netti PE, Brekken C, Boucher Y, Grodzinsky AJ, Jain RK
+  (1999) Mechanics of interstitial-lymphatic fluid transport: Theoretical
+  foundation and experimental validation. J Bio Mech 32:1297-1307
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITETaberHumphrey:2001" name="TaberHumphrey:2001">[Taber and Humphrey 2001]</a></dt><dd>
+Taber LA, Humphrey JD (2001) Stress-modulated growth, residual stress and
+  vascular heterogeneity. J Bio Mech Engrg 123:528-535
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEfeapmanual" name="feapmanual">[Taylor 1999]</a></dt><dd>
+Taylor RL (1999) FEAP - A Finite Element Analysis Program.
+  University of California at Berkeley, Berkeley, CA
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITEtezduyarsupg" name="tezduyarsupg">[Tezduyar and Sathe 2003]</a></dt><dd>
+Tezduyar T, Sathe S (2003) Stabilization parameters in SUPG and PSPG
+  formulations. Journal of Computational and Applied Mechanics 4:71-88
+
+<div class="p"><!----></div>
+</dd>
+ <dt><a href="#CITETruesdellNoll:65" name="TruesdellNoll:65">[Truesdell and Noll 1965]</a></dt><dd>
+Truesdell C, Noll W (1965) The Non-linear Field Theories (Handbuch der
+  Physik, band III). Springer, Berlin</dd>
+</dl>
+
+
+<div class="p"><!----></div>
+<hr /><h3>Footnotes:</h3>
+
+<div class="p"><!----></div>
+<a name="tthFtNtAAB"></a><a href="#tthFrefAAB">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>1</mn></mrow>
+</msup>
+</mrow></math></a>At this
+ point, we do not distinguish the solid species further. This is a
+ good approximation to the physiological setting for tendons, which
+ are relatively acellular and whose dry mass consists of up to 75%
+ collagen [<a href="#Nordinetal:2001" name="CITENordinetal:2001">Nordin et&nbsp;al., 2001</a>].
+<div class="p"><!----></div>
+<a name="tthFtNtAAC"></a><a href="#tthFrefAAC">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>2</mn></mrow>
+</msup>
+</mrow></math></a>Currently, we do not consider physiological
+processes which involve migration of the cells or surrounding matrix
+within the tissue-such as the migration of fibroblasts within the
+extra-cellular matrix during wound healing. 
+<div class="p"><!----></div>
+<a name="tthFtNtAAD"></a><a href="#tthFrefAAD">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>3</mn></mrow>
+</msup>
+</mrow></math></a>The amino acids, nutrients and
+regulators are in solution at low concentrations, and do not bear any
+appreciable stress.
+<div class="p"><!----></div>
+<a name="tthFtNtAAE"></a><a href="#tthFrefAAE">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>4</mn></mrow>
+</msup>
+</mrow></math></a>Under
+isothermal conditions, the only contribution to 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>&psi;</mi></mrow><mrow><mi fontstyle="normal">c</mi></mrow>
+</msup>
+</mrow></math> is
+from the strain energy.
+<div class="p"><!----></div>
+<a name="tthFtNtAAF"></a><a href="#tthFrefAAF">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>5</mn></mrow>
+</msup>
+</mrow></math></a>Where
+  we are referring to the fluid being subject to pure tension, not a
+  reduction in fluid compressive stress from an initial ambient 
+  pressure, manifesting itself as tensile stress.
+<div class="p"><!----></div>
+<a name="tthFtNtAAG"></a><a href="#tthFrefAAG">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>6</mn></mrow>
+</msup>
+</mrow></math></a><font color="#B70000">The
+ argument above works for all cases other than the one where the
+ system starts off unsaturated and the applied deformation has
+ determinant 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mo>&lt;</mo><mn>1</mn></mrow></math>, necessitating a collapse of voids. The fix is
+ probably right here. Something like
+ 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi fontstyle="normal">det</mi><mo stretchy="false">(</mo>
+<mtext></mtext>
+<mi fontstyle="normal" fontweight="bold">F</mi>
+<mtext></mtext>
+<mo stretchy="false">)</mo><mo>&lt;</mo>
+<mfrac><mrow><mn>1</mn></mrow>
+<mrow><mn>1</mn><mo>+</mo>
+<msubsup><mrow>
+<mover><mrow><mi>v</mi></mrow>
+<mo>~</mo></mover>
+</mrow><mrow><mi fontstyle="normal">ini</mi> </mrow>
+<mrow><mi>v</mi></mrow></msubsup>
+</mrow>
+</mfrac>
+</mrow></math></font>.
+<div class="p"><!----></div>
+<a name="tthFtNtAAH"></a><a href="#tthFrefAAH">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>7</mn></mrow>
+</msup>
+</mrow></math></a>and not in terms
+of acceleration <em>relative to fixed stars</em> for e.g., as discussed
+in <a href="#TruesdellNoll:65" name="CITETruesdellNoll:65">Truesdell and Noll, [1965</a>].
+<div class="p"><!----></div>
+<a name="tthFtNtAAI"></a><a href="#tthFrefAAI">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow></mrow><mrow><mn>8</mn></mrow>
+</msup>
+</mrow></math></a>where every observer has an
+implicit knowledge of the directionality of the field relative to a
+fixed frame, allowing it to transform objectively.
+<br /><br />
+
+
+      <h1><a id="previous">Previous Research</a></h1>
+      <p>(Will be populated when I have the time.)</p>
+      <h2><a id="remodelling">Material forces and remodelling in biological tissue</a></h2>
+      <h2><a id="silicon">Diffusion studies in Silicon</a></h2>
+      <h2><a id="emission">Emission studies in engines modified to LPG</a></h2>
+    </div>
+
+<!--#include file="genericfooter.html" -->

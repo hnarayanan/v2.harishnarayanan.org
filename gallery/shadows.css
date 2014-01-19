@@ -1,0 +1,96 @@
+html,body
+{ 
+	background: #ffffff;
+	margin: 0;
+	padding: 0px 0;
+	height: 99%;
+	width: 100%;
+}
+
+table
+{
+	width:  100%;
+	height: 100%;
+}
+
+td
+{
+	vertical-align: middle;
+	width:auto;
+}
+
+.shadow
+{
+	float: left;
+	width: auto;
+	background: url(fuzzy_shadow.png) no-repeat bottom right;
+}
+
+.shadow div
+{
+	background: url(fuzzy_shadow1.png) no-repeat right top;
+}
+
+.shadow div a
+{
+	background: url(fuzzy_shadow2.png) no-repeat left bottom;
+	padding: 0 6px 6px 0;
+	display: block;
+}
+
+.shadow img
+{
+	background-color: #fff;
+	border: 1px solid #a9a9a9;
+	padding: 4px;
+	vertical-align: bottom;
+	display: block;
+}
+
+.wrap1
+{
+	display: table-cell;
+}
+
+.wrap0
+{
+	display: table;
+	margin: 1em auto;
+}
+
+.aright 
+{
+	text-align: right;
+}
+.aleft {
+	text-align: left;
+}
+
+/* IE/Mac \*//*/
+.wrap0
+{
+	display: block;
+	margin: 1em 0;
+	text-align: center;
+}
+
+.wrap1
+{
+	display: inline-block;
+	width: 1px;
+	white-space: nowrap;
+}
+/**/
+
+/* Fix the following so an arbitrary sized image won't seem out of place */
+.imginfo
+{
+	width: 480px;
+	padding-right:6px;
+}
+
+.navigation
+{
+	width: 480px;
+	padding-right:6px;
+}

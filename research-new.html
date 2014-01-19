@@ -1,0 +1,130 @@
+<!--#set var="pagetitle" value="Past and Present Research Information" -->
+<!--#include file="genericheader.html" -->
+<!--#set var="navigation" value="Research" -->
+<!--#include file="genericnavigator.html" -->
+
+    <!-- The actual content of the page -->
+    <div id="content">
+      <h1>Areas of Interest</h1>
+      <p>My academic interests fall under the following relatively broad categories:</p>
+      <ul>
+        <li>Classical theoretical and applied mechanics, Multiphysics phenomena</li>
+        <li>Analysis of numerical methods, Advanced finite element methods</li>
+        <li>Large scale high performance computing</li>
+      </ul>
+      <h1><a id="currentresearch">Current Research &mdash; The Mathematics and Mechanics of Growth in Biological Tissue</a></h1>
+      <div style="text-align:center;"><img src="downloads/images/random-mix.png" alt="A tendon that is stronger after growth." title="A tendon that is stronger after growth." /></div>
+<!--      <br /> &mdash; Multiple species, multiple physics, and yes, multiple scales</h2> -->
+      <p><i>Parts of the following have deliberately been written in a rather chatty style. The aim was to allow people who haven't been exposed to this sort of thing to be able to read this. I have based it on the general style I used for one of my better talks. In fact, bits of this were typed out as I was staring at corresponding slides. Portions of this page are currently rather incomplete, but will be populated as soon as I can make the time.</i></p>
+      <p><i>People interested in the details can of course read the <a href="publications.html">linked papers and presentation slides</a>, or <a href="index.html">contact me</a> for further fascinating information. If you'd like to rush to the <a href="#growthvideos">pretty results plots and videos</a>, feel free to bypass all this verbosity. I won't mind.</i></p>
+      <h2><a id="development">Biological motivation &mdash; Development of biological tissue</a></h2>
+      <p>The processes involved in development of biological tissue, though complex and involving several cascades of biochemical reactions, have been generally broken down into the following processes in biomechanics literature.</p>
+      <ul>
+        <li><i>Growth/Resorption</i>
+        <br />Growth (and conversely resorption) can be thought of as an addition of mass to (or loss of mass from) the various species making up the system. Densification of bone, for example.</li>
+        <li><i>Remodelling</i>
+        <br />Remodelling is the process of microstructural reconfiguration within a tissue. It can be viewed as evolution of the reference configuration to a <i>remodelled</i> configuration. An example of this is the alignment of trabeculae in bones to axis of external loading.</li>
+        <li><i>Morphogensis</i>
+        <br />Morphogensis involves complex changes in macroscopic form. A canonical example of this being the development of an embryo from a fertilized egg.</li>
+      </ul>
+      <p>While these processes generally occur simultaneously during tissue development, they are viewed as mathematically independent processes for the purposes of this work.</p>
+      <div style="text-align:center;"><img src="downloads/images/constructs.jpg" alt="Our Constructs" title="Figure 1 - Our engineered tendon constructs." />
+      <br /><i>Different stages in the development of my colleague Sarah's engineered tendon constructs.</i><br /><br />
+      </div>
+      <p>Our work involves mathematical and computational models of the processes of tissue growth and remodelling, in particular tissue engineered tendon, through mathematical modelling in a macroscopic continuum setting, and tissue culture. These models are motivated and validated by our controlled experiments on invitro engineered tissue. Morphogenesis is currently beyond the scope of this body of work.</p>
+      <h2><a id="growth">A continuum treatment of growth in biological tissue</a></h2>
+      <p>The ideas that follow are sufficiently general. They are applicable to soft and hard tissue involving multiple species, and the formulation can be applied to a specific tissue as our body of interest. In this treatment, we consider growth of biological tissue at a macroscopic scale. At this scale, the formulation though motivated by cellular, sub-cellular or molecular processes, does not explicitly model processes at this fine scale.</p>
+      <p>During the mathematical treatment of such phenomena, a variety of enhancements to standard continuum mechanics machinery are required to handle the complexity in the system now presented. We are now presented with,</p>
+      <ul>
+        <li>An open system with respect to mass</li>
+        <li>Interacting and interconverting species</li>
+        <li>Species diffusing with respect to a <i>solid</i> phase</li>
+        <li>Mixture physics</li>
+      </ul>
+      <p>Currently, we treat them in an elementary fashion, using source/sink terms that govern inter-conversion of species, and the mass fluxes that supply reactants and remove byproducts. The treatment is mathematical, and explicit incorporation of biochemical and cellular processes within our description will be carried out subsequently. Essential to the understanding of this description are the notions of the <i>solid</i> phase, the <i>fluid</i> phase, and the other <i>precursors</i> and <i>byproducts</i> of biochemical reactions. The solid phase is an anisotropic composite that is inhomogeneous at microscopic and macroscopic scales. The fluid,
+being mostly water, is modelled as compressible with a very large bulk modulus. The various constituents are assumed to diffuse through the solid phase. Virtually all biological tissue consists of a solid and fluid phase and can be treated in the context of mixture theory.</p>
+      <p>Some of the highlights of our treatment include:</p>
+      <ul>
+        <li>Multiple species undergoing transport, interconversion, mechanical and thermodynamic interactions</li>
+        <li>Other species deform with the solid phase and diffuse with respect to it</li>
+        <li>Fully compatible with mixture theory</li>
+        <li>Detailed coupling of mechanics and mass balance</li>
+        <li>Thermodynamic consistency</li>
+      </ul>
+      <p>With that brief background out of the way, we now see how classical balance laws are enhanced by addition of these sources/sink and flux terms. Without really getting into the details, I am going to present relevant equations here. The terms that show up in the equations and figures have been described in slides 49 - 52 of <a href="downloads/talks/talk3/talk3.pdf">this presentation</a>. They have been written out for a species, in the reference configuration. As a final detour before I delve into the mathematics, it is beneficial to consider the <i>continuum potato</i> description of the system.</p>
+      <div style="text-align:center;"><img src="downloads/images/cp1.png" alt="Continuum potato" title="Figure 2 - The continuum potato picture of things." />
+      <br /><i>The continuum potato picture of things.</i><br /><br />
+      </div>
+      <p>It is easiest to comprehend the equation for the balance of mass by considering the two terms on the right hand side individually. The first arises due to the existence of a source term for the species under consideration, and the second arises due to the existence of a flux. (The negative sign arises from the convention that an outward normal is positive. And an outward flux will tend to reduce the concentration of that species.)</p>
+      <div style="text-align:center;"><img src="images/bomass.png" alt="Balance of Mass" title="Equation 1 - Balance of Mass" />
+      <br /><i>The balance of mass.</i><br /><br />
+      </div>
+      <p>Similarly, we go on to see how linear momentum balance is affected by terms involving mass transport. In order to see the physical relevance, a <i>material velocity</i>, analogous to the flux in the balance of mass, relative to the solid is introduced. We then get the balance of linear momentum to be of the form,</p>
+      <div style="text-align:center;"><img src="images/bolm.png" alt="Balance of Linear Momentum" title="Equation 2 - Balance of Linear Momentum" />
+      <br /><i>The balance of linear momentum.</i><br /><br />
+      </div>
+      <p>Again, it is easiest to see how this relates to classical results when each of the terms on the right hand side are analysed separately. The first two, corresponding to the body force and partial stress respectively, are classical terms. The final term is an addition in momentum to the system due to the flux of the species.</p>
+      <p>Before we proceed, we realize a subtlety with respect to the <i>kinematics of growth</i>. We thus apply a suitable multiplicative decomposition of the deformation gradient into a <i>growth tensor</i> and an elastic deformation gradient. The split will be apparent in the figure below.</p>
+      <div style="text-align:center;"><img src="downloads/images/growth-kinematics.jpg" alt="Kinematics Continuum potato" title="Figure 3 -  The continuum potato picture describing growth kinematics." />
+      <br /><i>The continuum potato picture describing growth kinematics.</i><br /><br />
+      </div>
+      <p>Proceeding in a similar manner to what was followed for balance of mass and momentum, the (first law of thermodynamics) balance of energy is written out.</p>
+      <div style="text-align:center;"><img src="images/energy.png" alt="Energy" title="Equation 3 - Balance of Energy" />
+      <br /><i>The balance of energy.</i><br /><br />
+      </div>
+      <p>We recognize the terms on the right hand side to be the stress power terms, energy loss due to heat flux outwards, energy gain due to pointwise heat generation, energy gain due to internal energy inflow, and energy loss due to flux of species outwards. Finally, we write out the (second law of thermodynamics) entropy inequality, and combine it with the energy balance equation to get the dissipation inequality below.</p>
+      <div style="text-align:center;"><img src="images/entropy.png" alt="Entropy" title="Equation 4 - Dissipation Inequality" />
+      <br /><i>The dissipation inequality.</i><br /><br />
+      </div>
+      <p>Assuming a suitable constitutive hypothesis for the stored energy (that it is a function of the elastic deformation gradient, the species density, and entropy) results in the following constitutive relations in accordance with the dissipation inequality.</p>
+      <div style="text-align:center;"><img src="images/const.png" alt="Consitutive relations" title="Equation set 5 - Consitutive relations 1" />
+      <br /><i>Constitutive relations - 1.</i><br /><br />
+      </div>
+      <p>The relations above are fairly standard and expected. The most interesting is the final one below.</p>
+      <div style="text-align:center;"><img src="images/const2.png" alt="Consitutive relations" title="Equation 6 - Consitutive relation 2" />
+      <br /><i>Constitutive relation - 2.</i><br /><br />
+      </div>
+      <p>This relation describes how the flux of a given species relates to the different driving forces. It can be thought of as a product of a mobility and the driving forces due to various phenomena (inside the parenthesis). It is easy to imagine this in terms of a wet sponge. If the sponge is moved with an acceleration in a certain direction, the fluid it holds will be accelerated in the opposite direction. This is the first term, the driving force due to inertia. The second is plain to see. If the sponge is under the influence of a body force, say gravity, the driving force on the fluid will be along that direction. The next term is the stress gradient term (Darcy's law). If you squeeze the sponge to a certain stress state, the fluid it contains will be driven in a direction as indicated by that term. The final term can be shown to be the driving force arising from chemical potential. </p>
+      <h2>Features of the Computational Formulation</h2>
+      <p>In order to solve the coupled system of partial differential equations arising from the theory detailed above, a finite element formulation employing a staggered scheme (Armero [1999], Garikipati et al. [2001]) was implemented in <tt><a href="http://www.ce.berkeley.edu/~rlt/feap/">FEAP</a></tt>, a general purpose finite element program. This code base is continually being refined and enhanced as our understanding of the system grows. Some of the specifics of our computational formulation include:</p>
+      <ul>
+        <li>Nonlinear projection methods to treat incompressibility (Simo et al. [1985])</li>
+        <li>Energy-momentum conserving algorithm for dynamics (Simo & Tarnow [1992a,b])</li>
+        <li>Backward Euler for time dependent mass balance</li>
+        <li>Mixed method for stress/strain gradient-driven fluxes (Garikipati et al. [2001])</li>
+        <li>Large advective terms require stabilization (Garikipati et al. [2001])</li>
+      </ul>
+      <a id="growthvideos"></a>
+      <h2>Selected Numerical Examples</h2>
+      <p>For the following numerical examples, we consider systems similar in geometry, material properties and boundary conditions to our biological models &mdash; engineered tendons in fluid baths. The tendon itself is modelled as a right circular cylinder, 12 mm in length and 1 mm<sup>2</sup> in cross sectional area. The following is a representative spatial mesh used to represent it in the computations.</p>
+      <div style="text-align:center;"><img src="downloads/images/coarse-mesh.jpg" alt="Relatively coarse mesh used in computations" title="Relatively coarse mesh used in computations" /></div>
+      <p>In order to visualize the results of the computations, I have also linked to videos that show evolution of various fields with time. Clicking on specially marked images below should link you to the corresponding video. The plots are generated in <tt>FEAP</tt>, and the videos from these plots were rendered using <a href="http://www.imagemagick.org/">Imagemagick's</a> <tt>ccnvert</tt>.</p>
+      <h2>1. Tendon Growing in a Fluid Rich Bath</h2>
+      <p>In this example, a biphasic model &mdash; consisting of a solid and a fluid phase &mdash; was used to represent the tendon. The solid phase is representative of the collagen and proteoglycan network, and is modelled using a nonlinear material model based on the worm like chain model. The fluid phase, representing the extracellular fluid and dissolved solutes, is modelled as an ideal, nearly incompressible fluid with the bulk compressibility of water. An artificial source term, following a simple first order rate reaction law, is used to model the creation of collagen. The fluid mobilites were extracted from literature (Han et al. [2000]).</p>
+      <p>The boundary conditions, consistent with experiments, are immersing this tendon in a bath rich in fluid, i.e. the fluid concentration is maintained a constant (high) on the boundary and it is allowed to flux in through and out of all surfaces. The mechanical conditions are traction free. As we intuitively expect, we see the nutrient rich fluid diffusing into the tendon, facilitating production of collagen (growth of the tendon). The following are some results of the computations.</p>
+      <p>Collagen concentrations before and after growth</p>
+      <p>Videos of evolution of related quantities</p>
+      <p>Changes in volume of cylinder clearly showing diffusion and growth dominated regimes</p>
+      <p>Stress=extension curves showing a stronger tendon post growth, imitating experimental observations</p>
+
+<!--      <p>The dimensions of the cylinder and its properties are based on biological models. The problem considered is as shown in the picture below. The cylinder is stretched outwards in the 33 direction while all around its boundary, </p> -->
+      <div style="text-align:center;"><img src="downloads/images/nreg.png" alt="Numerical Example" title="Figure 4 - An image describing the numerical example." />
+      <br /><i>An image describing the numerical example.</i><br /><br />
+      </div>
+
+      <div style="text-align:center;"><a href="downloads/videos/Movie_Pi.mpg"><img src="downloads/images/vpi.png" alt="Source term" title="Video 1 - Evolution of the source term." /></a>
+      <br /><i>Evolution of the source term.</i><br /><br />
+      </div>
+      <div style="text-align:center;"><a href="downloads/videos/Movie_M.mpg"><img src="downloads/images/vm.png" alt="Total Flux" title="Video 2 - Total flux driven by all effects." /></a>
+      <br /><i>Total flux driven by all effects.</i><br /><br />
+      </div>
+      <div style="text-align:center;"><a href="downloads/videos/Movie_S33.mpg"><img src="downloads/images/swell-solid-concentration.jpg" alt="Stress" title="Video 3 - Stress in the 33 direction." /></a>
+      <br /><i>Stress in the 33 direction.</i><br /><br />
+      </div>
+      <h2><a id="remodelling">A continuum treatment of remodelling in biological tissue</a></h2>
+      <p>(Will be populated when I have the time.)</p>
+      <h1><a id="previous">Previous Research</a></h1>
+      <p>(Will be populated when I have the time.)</p>
+    </div>
+
+<!--#include file="genericfooter.html" -->

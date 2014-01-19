@@ -1,0 +1,92 @@
+      body 
+           {
+	     font:11px verdana, arial, helvetica, sans-serif;
+	     color:#333;
+	     background-color:#d3d3c3;
+	   }
+      h1
+           {
+	     color:#6f6f63;
+	     font:1.8em/1 Georgia, "Times New Roman", Times, serif;
+	     font-weight:900;
+	     text-align: center;
+	   }
+      h2 
+           {
+	     color:#333333;
+	     font:1.2em/1 Georgia, "Times New Roman", Times, serif;
+	     font-weight:700;
+	     margin:0.5em 0 .25em;
+	     text-align: center;
+	   }
+      h3 
+           {
+	     color:#333;
+	     font:0.9em/1 Georgia, "Times New Roman", Times, serif;
+	     font-weight:600;
+	     margin:2em 0 .25em;
+             margin-bottom:1.3em;
+	   }
+      p 
+           {
+	     line-height:1.8;
+	     margin:0 0 1em;
+	   }
+      ol, ul
+           {
+	     margin-top:0;
+           margin-bottom:1em;
+	     line-height:1.8;
+	   }
+	li
+	     {
+		padding-bottom: 1em;
+	     }
+      a
+           {
+	     color:#09c;
+	     text-decoration:none;
+	     font-weight:600;
+	   }
+      a:link
+           {  
+             color:#6f6f63;
+           }
+      a:visited
+           {
+             color:#444;
+           }
+      a:hover
+           {
+             color:#666;
+           }
+      body
+           {
+	       margin:50px 0px; padding:0px;
+	       text-align:center;
+	     }
+	#contact
+	     {
+		 width: 420px;
+             float: right;
+		 padding-bottom: 3em;
+           }
+      #picture
+           { 
+		 width: 160px;
+             float: left;
+	       padding-bottom: 2em;
+           }
+      #content
+           {
+	     width:580px;
+	     margin:0px auto;
+	     text-align:left;
+	     padding:15px;
+	     border:1px solid #6f6f63;
+	     background-color:#f3f3e3;
+	   }
+      img
+           { 
+             border: 0px;
+           }

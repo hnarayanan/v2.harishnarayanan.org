@@ -1,0 +1,36 @@
+<!--#set var="pagetitle" value="Freaking Annoying Emacs Queries" -->
+<!--#include file="genericheader.html" -->
+<!--#include file="genericnavigator.html" -->
+
+    <!-- The actual content of the page -->
+    <div id="content">
+      <h1>
+        Freaking Annoying Emacs Queries
+	<br />(Or "This file does not end in a newline. Add one?")
+      </h1>
+<!--#include file="disclaimer.html" -->
+      <h2>The Actual Tip Follows</h2>
+      <p>Do recent <a href="http://www.gnu.org/software/emacs/emacs.html">Emacs </a> on recent Red Hat/Fedora Core distributions drive you insane with their incessant <tt>"This file does not end in a newline. Add one?"</tt> queries?</p>
+      <p>No god damn it. I DON'T WANT TO ADD A NEW LINE. I WANT NO NEW LINE AT THE END OF THE DOCUMENT. NO NEW LINE.</p>
+      <p>GOD. ARGGGGH.</p>
+      <p>Some reading up resulted in figuring out two ways of fixing this.</p>
+      <ol>
+        <li>
+	  If you have <tt>root</tt> access, do <i>everybody</i> a favour and replace the line
+	  <div class="console">(setq require-final-newline 'query)</div>
+	  with
+	  <div class="console">(setq require-final-newline nil)</div>
+	  in the file <tt>/usr/share/emacs/site-lisp/default.el</tt>.
+	</li>
+	<li>
+	  If you can't become <tt>root</tt>, just prevent it from reading this retarded <tt>default.el</tt> file by adding to your <tt>~/.emacs</tt>:
+	  <div class="console">(setq inhibit-default-init t)</div>
+	</li>
+      </ol>
+      <p>Sometimes, you wonder what goes through the minds of the geniuses behind these decisions.</p>
+    </div>
+
+<!--#include file="genericfooter.html" -->
+
+
+

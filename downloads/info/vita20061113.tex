@@ -1,0 +1,232 @@
+% Harish's Curriculum vitæ (v5.0 / 20061113)
+%
+% This LateX document requires Miklós Csürös' résumé class; the latest
+% version of which ought be available at the URI below:
+% http://www.iro.umontreal.ca/~csuros/latex.html
+%
+% Once you've fetched the class file and dropped it into the same
+% directory, you can edit this vitae to fit your needs, and ``TeX it''
+% using the command: 
+% latex vitae.tex && dvips -o vitae.ps vitae.dvi && ps2pdf vitae.ps
+
+% Set the document style
+\documentclass{resume}
+
+% Define additional packages used
+\usepackage[usenames]{color}
+
+% Set constants and new commands
+\renewcommand{\categoryfont}{\sc\small}
+\setlength{\oddsidemargin}{1in}
+\setlength{\marginparwidth}{1in}
+\addtolength{\marginparwidth}{-\marginparsep}
+\setlength{\evensidemargin}{\oddsidemargin}
+\setlength{\textwidth}{\paperwidth}
+\addtolength{\textwidth}{-2in}
+\addtolength{\textwidth}{-2\oddsidemargin}
+\addtolength{\textwidth}{\marginparwidth}
+\addtolength{\textwidth}{\marginparsep}
+\setlength{\topmargin}{-0.5in}
+\renewcommand{\labelcitem}{$\circ$}
+\renewcommand{\labelitemi}{$\cdot$}
+\newcommand{\first}{$1^{\mbox{\scriptsize st}}$\ }
+\newcommand{\second}{$2^{\mbox{\scriptsize nd}}$\ }
+\newcommand{\third}{$3^{\mbox{\scriptsize rd}}$\ }
+\definecolor{Light}{rgb}{0.3,0.3,0.3}
+
+% Author
+\author{$\quad\quad$Harish Narayanan} %Gross centering hack
+
+% Contact Information
+% Official
+\address{{\color {Light}
+    {University of Michigan\\
+      Computational Mechanics Laboratory\\
+      Department of Mechanical Engineering\\
+      2250 G. G. Brown, 2350 Hayward\\
+      Ann Arbor, MI 48109--2122\\
+      Lab Phone: +1 (734) 936--2925}}}
+% Personal
+        {{\color {Light}
+            350 Thompson Street, Apt \#108\\
+            Ann Arbor, MI 48104--2239\\
+            Phone: \small{+}1 (734) 262--1010\\[12 pt]
+            \mbox{\small\tt hnarayan@umich.edu}\\
+            \mbox{\small\tt http://umich.edu/$\sim$hnarayan/}}}
+        
+% Begin the document
+\begin{document}
+
+% Make the header
+\maketitle
+
+% Long term goal
+\begin{category}{Career\\ Goal}
+  \citemnobullet {\em To pursue a career in academia as a mechanics
+    educator at a distinguished institution of higher learning.}
+\end {category}
+
+% Education
+\begin{category}{Education}
+  \citem{University of Michigan}, Ann Arbor, MI\\
+  $\cdot$ Ph.D. in Mechanical Engineering and Scientific Computing,
+  July 2007 {\em (Expected)}\\
+  $\quad{}\quad{}$ Dissertation topic: The mechanics and physics of
+  biological growth\\
+  $\quad{}\quad{}$ Dissertation chair: Prof. Krishnakumar
+  R. Garikipati\\[3 pt]
+  $\cdot$ M.S. in Mathematics, December 2006  {\em (Expected)}\\[3 pt]
+  $\cdot$ M.S.E. in Mechanical Engineering, December 2003
+  \citem{University of Madras}, Madras, India\\
+  $\cdot$ B.E. in Mechanical Engineering, July 2002  {\em (First class
+    with distinction)}
+\end{category}
+
+% Academic honours
+\begin {category}{Academic Honours}
+  \citembullet Received the {\em Sir C. P. Ramaswamy Aiyar Endowment
+    Scholarship} from the University of Madras in 2001--02 for
+  excellent academic performance at the undergraduate level.
+  \citembullet Received a {\em Certificate of Merit} for outstanding
+academic work throughout $12^{\mathrm{th}}$ grade, including securing
+the {\em First Rank in Physics}, AISSCE 1998 (C.B.S.E.
+$12^{\mathrm{th}}$).
+\end{category}
+
+% Intellectual things I find interesting
+\begin {category} {Academic Interests}
+  \citembullet Classical and modern field theories of mechanics,
+  Multi-physics phenomena
+  \citembullet Analysis of numerical methods, Advanced finite element
+  methods
+  \citembullet Large scale, high performance computing 
+\end{category}
+
+% Courses covered in graduate school
+\begin{category}{Graduate Coursework}
+  \citembullet Theoretical mechanics, Continuum mechanics, Solid and
+  structural mechanics, Theory of elasticity, Mechanics of polymers,
+  Differential equations in mechanics, Mechanical vibrations
+  \citembullet Finite element, difference and volume methods,
+  Multi-grid methods, Spectral methods, Level set methods, Numerical
+  linear algebra, Complex analysis, Methods of applied analysis
+  \citembullet Computational modelling of biological tissue,
+  Multi-physics phenomena at micro-scales, General relativity,
+  Parallel computing
+\end{category}
+
+%Research Work
+\begin{category}{Research Experience}
+  \citembullet January 2003 -- Present: {\em Graduate Student Research 
+  Assistant} studying the mechanics of biological
+  tissue growth. This doctoral thesis work is supervised by
+  Prof. Krishnakumar R. Garikipati, Prof. Ellen M. Arruda and
+  Prof. Karl Grosh in the Department of Mechanical Engineering and
+  Prof. Trachette L. Jackson in the Department of Mathematics.
+  \citembullet October 2002 -- December 2002: {\em Directed Research}
+  under Prof. Krishnakumar R. Garikipati in collaboration with
+  Prof. Michael Falk, working on numerical evaluation of Green's
+  function solutions pertinent to defect 
+  formation in anisotropic solids under stress.
+  \citembullet August 2001 -- July 2002: {\em Undergraduate Senior
+    Year Project} at the University of Madras on systematically
+  evaluating the use of gaseous petroleum as a viable fuel for
+  automobiles. This work was under the guidance of Prof. S. Sampath
+  and Prof. B. S. Murthy.
+\end{category}
+
+%Teaching work
+\begin{category}{Teaching Experience}
+  \citembullet September 2006 -- Present: {\em Graduate Student
+  Instructor} for {\em Mechanical Behaviour of Materials} (ME 382),
+  working with Prof. Ellen M. Arruda and Prof. J. Wayne Jones.
+\end{category}
+
+%Go to next page
+\newpage
+\topmargin -0.2in
+
+%Publication list
+\begin{category}{Publications}
+  \citembullet ``Biological Growth: Reaction, transport and
+  mechanics,'' {\em H. Narayanan}, E. M. Arruda, K. Grosh,
+  K. Garikipati, Biomechanics and Modeling in Mechanobiology (In
+  preparation)
+  \citembullet ``The continuum elastic and atomistic viewpoints on the
+  formation volume and strain energy of a point defect,''
+  K. Garikipati, M. Falk, M. Bouville, B. Puchala, {\em H. Narayanan},
+  Journal of the Mechanics and Physics of Solids, Vol. 54 (9)
+  pp. 1929--1951, September 2006
+  \citembullet ``Biological remodelling: Stationary energy,
+  configurational change, internal variables and dissipation,''
+  K. Garikipati, J. E. Olberding, {\em H. Narayanan}, E. M. Arruda,
+  K. Grosh, S. Calve, Journal of the Mechanics and Physics of Solids,
+  Vol. 54 (7) pp. 1493--1515, \mbox{July 2006}
+  \citembullet ``Characterization and modeling of growth and
+  remodeling in tendon and soft tissue constructs,'' E. M. Arruda,
+  S. Calve, K. Garikipati, K. Grosh, {\em H. Narayanan}, Proceedings
+  of the IUTAM symposium on Mechanics of Biological Tissue, June
+  27--July 2, 2004 (To appear)
+  \citembullet ``Material forces in the context of biotissue
+  remodelling,'' K. Garikipati, {\em H. Narayanan}, E. M. Arruda,
+  K. Grosh, S. Calve, Mechanics of Material Forces edited by
+  P. Steinmann and G. A. Maugin, Springer, 2005
+  \citembullet ``A continuum treatment of growth in biological tissue:
+  The coupling of mass transport and mechanics,'' K. Garikipati,
+  E. M. Arruda, K. Grosh, {\em H. Narayanan}, S. Calve, Journal of the
+  Mechanics and Physics of Solids, Vol. 52 (7) pp. 1595--1625, July 2004 
+\end{category}
+
+%Some recent talks
+\begin{category}{Selected Talks}
+  \citembullet ``Finite Element Methods in General Relativity,'' 2006
+  University of Michigan Engineering Graduate Student Symposium, November 2006
+  \citembullet ``Viscoelastic and Growth Mechanics in Engineered and
+  Native Tendons,'' 43$^\mathrm{rd}$ Annual Technical Meeting of the
+  Society of Engineering Science, August 2006
+  \citembullet ``The numerical implications of fluid incompressibility
+  in multiphasic modelling of soft tissue growth,'' Seventh World
+  Congress on Computational Mechanics, July 2006
+  \citembullet ``Tendon Growth and Healing: The Roles of Reaction,
+  Transport and Mechanics,'' 15$^\mathrm{th}$ U.S. National Congress on
+  Theoretical and Applied Mechanics, June 2006 
+  \citembullet ``Computational Modelling of Mechanics and Transport in
+  Growing Tissue,'' Eighth U.S. National Congress on Computational
+  Mechanics, July 2005
+  \citembullet ``A Continuum Treatment of Coupled Mass Transport and
+  Mechanics in Growing Soft Tissue,'' Materials Research Society 2004
+  Fall Meeting, November 2004
+  \citembullet ``Multi-Scale Simulations of the Mechanics of Transport
+  and Growth in Soft Tissue,'' 41$^\mathrm{st}$ Annual Technical
+  Meeting of the Society of Engineering Science, October 2004 
+  \citembullet ``Material forces in the context of biological tissue
+  remodelling,'' Seventh U.S. National Congress on Computational
+  Mechanics, July 2003
+  \citembullet ``A continuum treatment of growth in tissue: Mass
+  transport coupled with mechanics,'' Second M.I.T. Conference on
+  Computational Fluid and Solid Mechanics, June 2003
+\end{category}
+
+%Activities that help with my work
+\begin{category}{Professional Development}
+  \citembullet Recognised as an {\em Engineering Academic Scholar}
+  by the office of the Associate Dean for Graduate Education after
+  successfully completing the Academic Careers in Engineering and
+  Sciences Program, November 2005 
+\end{category}
+
+%Work-related service
+\begin{category}{Professional Activities}
+  \citembullet Engineering Graduate Student Symposium (2003 -- 2006):
+  As an active member of the team responsible for organisation of the
+  annual event, I have witnessed the growth of the symposium from its
+  origins in the Department of Mechanical Engineering to now encompass
+  most of the College of Engineering. My roles have included chairing
+  technical sessions, creating the symposium web site, photographing
+  the event and creating its visual identity.
+  \citembullet System administrator for the Computational
+    Mechanics Laboratory (January 2003 -- Present)
+  \citembullet Writing articles related to free software and technology
+\end{category}
+
+\end{document}

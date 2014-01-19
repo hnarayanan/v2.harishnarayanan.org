@@ -1,0 +1,179 @@
+#address ul {
+list-style-type:none;
+margin-top:4px;
+}
+
+#content {
+background-color:#eee;
+border:1px solid #666;
+margin:0 auto 2.7em;
+padding:1.3em;
+text-align:left;
+width:600px;
+}
+
+#description {
+background-color:#f3f3f3;
+border:1px dotted #888;
+margin:0 auto 0.5em;
+padding:0.6em;
+text-align:left;
+width:460px;
+}
+
+#footer,#gal-nav {
+text-align:center;
+}
+
+#navcontainer {
+border-top:1px solid #999;
+margin-bottom:3.6em;
+margin-left:auto;
+margin-right:auto;
+z-index:1;
+}
+
+#navcontainer li {
+display:inline;
+margin:0 5px;
+text-align:center;
+}
+
+#navcontainer li a {
+background-color:#eee;
+border:1px solid #ccc;
+color:#666;
+padding:1px 7px;
+text-decoration:none;
+}
+
+#navcontainer li a:hover,#navcontainer li a#current {
+border:1px solid #666;
+border-bottom:1px solid #666;
+border-top:1px solid #666;
+color:#000;
+}
+
+#navcontainer ul {
+list-style-type:none;
+margin-top:-0.9em;
+padding:0;
+position:relative;
+text-align:center;
+z-index:2;
+}
+
+a {
+color:#333;
+font-weight:600;
+text-decoration:none;
+}
+
+a:hover {
+color:#666;
+}
+
+a:link {
+color:#333;
+}
+
+a:visited {
+color:#444;
+}
+
+acronym {
+cursor:help;
+}
+
+body {
+background-color:#FFF;
+color:#222;
+font:11px verdana, arial, helvetica, sans-serif;
+margin:50px 0;
+padding:0;
+text-align:center;
+}
+
+div.console {
+background-color:#333;
+border:1px solid #aaa;
+color:#eee;
+font-family:"Andale Mono", Courier, Monospace;
+font-size:0.9em;
+margin:9px;
+padding:15px;
+white-space:pre;
+}
+
+h1 {
+color:#333;
+font:1.2em verdana, arial, helvetica, sans-serif;
+font-weight:700;
+margin:2em 0 .5em;
+}
+
+h2 {
+color:#333;
+font:1.1em verdana, arial, helvetica, sans-serif;
+font-weight:600;
+margin:2em 0 .5em;
+}
+
+h3 {
+color:#333;
+font:1em verdana, arial, helvetica, sans-serif;
+font-weight:600;
+margin:2em 0 .5em;
+}
+
+img {
+border:0;
+margin:0 0 1em;
+}
+
+ol,ul {
+line-height:1.8;
+margin-bottom:1em;
+margin-top:0;
+}
+
+p {
+line-height:1.8;
+margin:0 0 1em;
+text-align:justify;
+}
+
+p.bigthumbnails {
+margin-left:auto;
+margin-right:auto;
+text-align:center;
+}
+
+p.bigthumbnails a {
+background-color:#eee;
+border:1px solid #ccc;
+display:block;
+float:left;
+height:90px;
+margin:3px;
+padding:8px;
+text-align:center;
+width:120px;
+}
+
+p.bigthumbnails a:hover {
+background-color:#fff;
+border:1px solid #aaa;
+margin:3px;
+}
+
+p.bigthumbnails img {
+display:inline;
+height:84px;
+width:112px;
+}
+
+table.center {
+margin-left:auto;
+margin-right:auto;
+}
